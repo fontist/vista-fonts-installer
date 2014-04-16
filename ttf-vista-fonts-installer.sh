@@ -68,7 +68,7 @@ if [ $err -ne 1 ]; then
     echo -n ":: Converting 'Cambria Regular' (TTC) to TrueType (TTF)... "
     fontforge -lang=ff -c 'Open("cambria.ttc(Cambria)"); Generate("cambria.ttf"); Close();' &> /dev/null
     if [ $? -ne 0 ]; then
-        echo "Error: Can't convert combia.ttc. Please try again!"
+        echo "Error: Can't convert file combria.ttc. Please try again!"
         err=1
     else
         echo "Done!"
@@ -78,17 +78,17 @@ fi
 if [ $err -ne 1 ]; then
     echo -n ":: Installing... "
     mkdir -p "$output_dir"
-    cp "$tmp_dir/*.ttf" "$output_dir"
+    cp -f "$tmp_dir/"*.ttf "$output_dir"
     echo "Done!"
 fi
 
 if [ $err -ne 1 ]; then
 	echo -n ":: Clean the font cache... "
-	fc-cache -f $output_dir &> /dev/null
+	fc-cache -f "$output_dir" &> /dev/null
 	echo "Done!"
 fi
 
 echo -n ":: Cleanup... "
 cd - &> /dev/null
-rm -rf /tmp/fonts-vista &> /dev/null
+rm -rf "$tmp_dir" &> /dev/null
 echo "Done!"

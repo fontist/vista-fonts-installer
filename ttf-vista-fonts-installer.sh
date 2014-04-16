@@ -78,14 +78,20 @@ fi
 if [ $err -ne 1 ]; then
     echo -n ":: Installing... "
     mkdir -p "$output_dir"
-    cp -f "$tmp_dir/"*.ttf "$output_dir"
-    echo "Done!"
+    cp -f "$tmp_dir"/*.ttf "$output_dir"  &> /dev/null
+    if [ $? -ne 0 ]; then
+        echo "Error: Can't copy files to output directory."
+        err=1
+    else
+        chmod 644 "$tmp_dir"/*.ttf &> /dev/null
+        echo "Done!"
+    fi
 fi
 
 if [ $err -ne 1 ]; then
-	echo -n ":: Clean the font cache... "
-	fc-cache -f "$output_dir" &> /dev/null
-	echo "Done!"
+    echo -n ":: Clean the font cache... "
+    fc-cache -f "$output_dir" &> /dev/null
+    echo "Done!"
 fi
 
 echo -n ":: Cleanup... "

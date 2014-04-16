@@ -86,7 +86,7 @@ if [ $err -ne 1 ]; then
         echo "Error: Can't copy files to output directory."
         err=1
     else
-        chmod 644 "$tmp_dir"/*.ttf &> /dev/null
+        #chmod 644 "$tmp_dir"/*.ttf &> /dev/null
         echo "Done!"
     fi
 fi

@@ -1,8 +1,8 @@
 #!/bin/bash
 # Author: Maxwel Leite
 # Website: http://needforbits.tumblr.com/
-# Description: Simple script to install Microsoft Vista TrueType Fonts on Ubuntu distros
-# Dependencies: wget, fontforge, cabextract
+# Description: Script to install Microsoft Vista TrueType Fonts on Ubuntu distros
+# Dependencies: wget, fontforge and cabextract
 # Tested: Ubuntu Saucy
 
 output_dir="/usr/share/fonts/truetype/vista"
@@ -39,14 +39,14 @@ mkdir -p "$tmp_dir"
 cd "$tmp_dir"
 err=0
 
-echo -n ":: Downloading PowerPoint Viewer... "
+echo -e "\n:: Downloading PowerPoint Viewer...\n"
 wget -O "$file" http://download.microsoft.com/download/c/3/0/c30e1cd2-e56a-4161-9e81-34079ab799a3/PowerPointViewer.exe
 if [ $? -ne 0 ]; then
     rm -f "$file"
     echo "Error: Download failed!? Please try again!"
     exit 1
 fi
-echo "Done!"
+echo -e "Done!"
 
 echo -n ":: Extracting... "
 cabextract -t "$file" &> /dev/null
@@ -64,7 +64,7 @@ else
     fi
 fi
 
-if [ $err -e 0 ]; then
+if [ $err -ne 1 ]; then
     echo -n ":: Converting 'Cambria Regular' (TTC) to TrueType (TTF)... "
     fontforge -lang=ff -c 'Open("cambria.ttc(Cambria)"); Generate("cambria.ttf"); Close();' &> /dev/null
     if [ $? -ne 0 ]; then
@@ -75,20 +75,20 @@ if [ $err -e 0 ]; then
     fi
 fi
 
-if [ $err -e 0 ]; then
+if [ $err -ne 1 ]; then
     echo -n ":: Installing... "
     mkdir -p "$output_dir"
     cp "$tmp_dir/*.ttf" "$output_dir"
     echo "Done!"
 fi
 
-if [ $err -e 0 ]; then
+if [ $err -ne 1 ]; then
 	echo -n ":: Clean the font cache... "
 	fc-cache -f $output_dir &> /dev/null
 	echo "Done!"
 fi
 
 echo -n ":: Cleanup... "
-cd -
+cd - &> /dev/null
 rm -rf /tmp/fonts-vista &> /dev/null
 echo "Done!"

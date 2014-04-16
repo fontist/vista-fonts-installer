@@ -37,40 +37,56 @@ fi
 file="$tmp_dir/PowerPointViewer.exe"
 mkdir -p "$tmp_dir"
 cd "$tmp_dir"
+err=0
 
 echo -n ":: Downloading PowerPoint Viewer... "
 wget -O "$file" http://download.microsoft.com/download/c/3/0/c30e1cd2-e56a-4161-9e81-34079ab799a3/PowerPointViewer.exe
 if [ $? -ne 0 ]; then
     rm -f "$file"
-    echo -e "Error: Download failed!?\nPlease try again!"
+    echo "Error: Download failed!? Please try again!"
     exit 1
 fi
 echo "Done!"
-
 
 echo -n ":: Extracting... "
 cabextract -t "$file" &> /dev/null
 if [ $? -ne 0 ]; then
-    echo -e "Error: Can't extract. Corrupted download!?\nPlease try again!"
-    rm -f "$file"
-    exit 1
+    echo "Error: Can't extract. Corrupted download!? Please try again!"
+    err=1
+else
+    cabextract -F ppviewer.cab "$file" &> /dev/null
+    cabextract -L -F '*.tt?' ppviewer.cab &> /dev/null
+    if [ $? -ne 0 ]; then
+        echo "Error: Can't extract. Corrupted download!? Please try again!"
+        err=1
+    else
+        echo "Done!"
+    fi
 fi
-cabextract -F ppviewer.cab "$file" &> /dev/null
-cabextract -L -F '*.tt?' ppviewer.cab &> /dev/null
-echo "Done!"
 
-echo -n ":: Converting 'Cambria Regular' (TTC) to TrueType (TTF)... "
-fontforge -lang=ff -c 'Open("cambria.ttc(Cambria)"); Generate("cambria.ttf"); Close();' &> /dev/null
-echo "Done!"
+if [ $err -e 0 ]; then
+    echo -n ":: Converting 'Cambria Regular' (TTC) to TrueType (TTF)... "
+    fontforge -lang=ff -c 'Open("cambria.ttc(Cambria)"); Generate("cambria.ttf"); Close();' &> /dev/null
+    if [ $? -ne 0 ]; then
+        echo "Error: Can't convert combia.ttc. Please try again!"
+        err=1
+    else
+        echo "Done!"
+    fi
+fi
 
-echo -n ":: Installing... "
-mkdir -p "$output_dir"
-cp "$tmp_dir/*.ttf" "$output_dir"
-echo "Done!"
+if [ $err -e 0 ]; then
+    echo -n ":: Installing... "
+    mkdir -p "$output_dir"
+    cp "$tmp_dir/*.ttf" "$output_dir"
+    echo "Done!"
+fi
 
-echo -n ":: Clean the font cache... "
-fc-cache -f $output_dir &> /dev/null
-echo "Done!"
+if [ $err -e 0 ]; then
+	echo -n ":: Clean the font cache... "
+	fc-cache -f $output_dir &> /dev/null
+	echo "Done!"
+fi
 
 echo -n ":: Cleanup... "
 cd -

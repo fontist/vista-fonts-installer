@@ -43,21 +43,21 @@ echo -e "\n:: Downloading PowerPoint Viewer...\n"
 wget -O "$file" http://download.microsoft.com/download/c/3/0/c30e1cd2-e56a-4161-9e81-34079ab799a3/PowerPointViewer.exe
 if [ $? -ne 0 ]; then
     rm -f "$file"
-    echo "Error: Download failed!? Please try again!"
+    echo "Error: Download failed!?"
     exit 1
 fi
-echo -e "Done!"
+echo -e "Done!\n"
 
 echo -n ":: Extracting... "
 cabextract -t "$file" &> /dev/null
 if [ $? -ne 0 ]; then
-    echo "Error: Can't extract. Corrupted download!? Please try again!"
+    echo "Error: Can't extract. Corrupted download!?"
     err=1
 else
     cabextract -F ppviewer.cab "$file" &> /dev/null
     cabextract -L -F '*.tt?' ppviewer.cab &> /dev/null
     if [ $? -ne 0 ]; then
-        echo "Error: Can't extract. Corrupted download!? Please try again!"
+        echo "Error: Can't extract. Corrupted download!?"
         err=1
     else
         echo "Done!"
@@ -68,7 +68,7 @@ if [ $err -ne 1 ]; then
     echo -n ":: Converting 'Cambria Regular' (TTC) to TrueType (TTF)... "
     fontforge -lang=ff -c 'Open("cambria.ttc(Cambria)"); Generate("cambria.ttf"); Close();' &> /dev/null
     if [ $? -ne 0 ]; then
-        echo "Error: Can't convert file combria.ttc. Please try again!"
+        echo "Error: Can't convert file 'combria.ttc'."
         err=1
     else
         echo "Done!"
@@ -92,3 +92,9 @@ echo -n ":: Cleanup... "
 cd - &> /dev/null
 rm -rf "$tmp_dir" &> /dev/null
 echo "Done!"
+
+if [ $err -ne 1 ]; then
+    echo -e "\n\nCongratulations! Installation successful!!\n"
+else
+    echo -e "\n\nSome error occurred! Please try again!!\n"
+fi

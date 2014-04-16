@@ -103,7 +103,7 @@ rm -rf "$tmp_dir" &> /dev/null
 echo "Done!"
 
 if [ $err -ne 1 ]; then
-    echo -e "\n\nCongratulations! Installation successful!!\n"
+    echo -e "\nCongratulations! Installation successful!!\n"
 else
-    echo -e "\n\nSome error occurred! Please try again!!\n"
+    echo -e "\nSome error occurred! Please try again!!\n"
 fi

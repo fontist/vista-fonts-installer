@@ -43,24 +43,27 @@ echo -e "\n:: Downloading PowerPoint Viewer...\n"
 wget -O "$file" http://download.microsoft.com/download/c/3/0/c30e1cd2-e56a-4161-9e81-34079ab799a3/PowerPointViewer.exe
 if [ $? -ne 0 ]; then
     rm -f "$file"
-    echo "Error: Download failed!?"
-    exit 1
-fi
-echo -e "Done!\n"
-
-echo -n ":: Extracting... "
-cabextract -t "$file" &> /dev/null
-if [ $? -ne 0 ]; then
-    echo "Error: Can't extract. Corrupted download!?"
+    echo -e "\nError: Download failed!?\n"
     err=1
 else
-    cabextract -F ppviewer.cab "$file" &> /dev/null
-    cabextract -L -F '*.tt?' ppviewer.cab &> /dev/null
+    echo -e "Done!\n"
+fi
+
+if [ $err -ne 1 ]; then
+    echo -n ":: Extracting... "
+    cabextract -t "$file" &> /dev/null
     if [ $? -ne 0 ]; then
         echo "Error: Can't extract. Corrupted download!?"
         err=1
     else
-        echo "Done!"
+        cabextract -F ppviewer.cab "$file" &> /dev/null
+        cabextract -L -F '*.tt?' ppviewer.cab &> /dev/null
+        if [ $? -ne 0 ]; then
+            echo "Error: Can't extract 'ppviewer.cab' from 'PowerPointViewer.exe'. Corrupted download!?"
+            err=1
+        else
+            echo "Done!"
+        fi
     fi
 fi
 

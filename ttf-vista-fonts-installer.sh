@@ -1,7 +1,8 @@
 #!/bin/bash
 # Author: Maxwel Leite
 # Website: http://needforbits.tumblr.com/
-# Description: Script to install Microsoft Vista TrueType Fonts on Ubuntu distros
+# Description: Script to install Microsoft Vista TrueType Fonts (TTF) on Ubuntu distros
+#              (Consolas, Candara, Corbel, Constantia, Cambria and Calibri)
 # Dependencies: wget, fontforge and cabextract
 # Tested: Ubuntu Saucy
 

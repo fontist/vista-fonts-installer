@@ -4,7 +4,7 @@
 # Description: Script to install Microsoft Vista TrueType Fonts (TTF) on Ubuntu distros
 #              (Consolas, Candara, Corbel, Constantia, Cambria and Calibri)
 # Dependencies: wget, fontforge and cabextract
-# Tested: Ubuntu Saucy
+# Tested: Ubuntu Saucy/Trusty
 
 output_dir="/usr/share/fonts/truetype/vista"
 tmp_dir="/tmp/fonts-vista"

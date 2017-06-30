@@ -1,10 +1,12 @@
 #!/bin/bash
 # Author: Maxwel Leite
 # Website: http://needforbits.tumblr.com/
-# Description: Script to install Microsoft Vista TrueType Fonts (TTF) on Ubuntu distros
-#              (Consolas, Candara, Corbel, Constantia, Cambria and Calibri)
+# Description: Script to install Microsoft Vista TrueType Fonts (TTF) aka Microsoft’s ClearType fonts on Ubuntu distros
+#              Microsoft added a group of new "ClearType Fonts" to Windows with Windows Vista and Office 2007.
+#              These fonts are named Constantia, Corbel, Calibri, Cambria, Candara, and Consolas. 
+#              Calibri became the default font on Microsoft Word 2007, and it’s still the default font on Word 2013 today.
 # Dependencies: wget, fontforge and cabextract
-# Tested: Ubuntu Saucy/Trusty
+# Tested: Ubuntu Saucy/Trusty/Xenial
 
 output_dir="/usr/share/fonts/truetype/vista"
 tmp_dir="/tmp/fonts-vista"

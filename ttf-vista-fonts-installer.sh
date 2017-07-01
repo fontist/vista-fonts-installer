@@ -71,7 +71,9 @@ if [ $err -ne 1 ]; then
 fi
 
 if [ $err -ne 1 ]; then
-    echo -n ":: Converting 'Cambria Regular' (TTC) to TrueType (TTF)... "
+# If you need the Cambria (regular) font, you'll need to convert it to TTF because the font is available
+# as a TrueType Collection (TTC) and unless you convert it, you won't be able to use it in LibreOffice for instance. 
+    echo -n ":: Converting 'Cambria Regular' (TTC - TrueType Collection) to TrueType (TTF)... "
     fontforge -lang=ff -c 'Open("cambria.ttc(Cambria)"); Generate("cambria.ttf"); Close();' &> /dev/null
     if [ $? -ne 0 ]; then
         echo "Error: Can't convert file 'combria.ttc'."

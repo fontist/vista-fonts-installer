@@ -3,8 +3,8 @@
 # Website: http://needforbits.tumblr.com/
 # Description: Script to install Microsoft Vista TrueType Fonts (TTF) aka Microsoft’s ClearType fonts on Ubuntu distros
 #              Microsoft added a group of new "ClearType Fonts" to Windows with Windows Vista and Office 2007.
-#              These fonts are named Constantia, Corbel, Calibri, Cambria, Candara, and Consolas. 
-#              Calibri became the default font on Microsoft Word 2007, and it’s still the default font on Word 2013 today.
+#              These fonts are named Constantia, Corbel, Calibri, Cambria (and Cambria Math), Candara, and Consolas. 
+#              Calibri became the default font on Microsoft Word 2007, and it’s still the default font on Word 2016 today.
 # Dependencies: wget, fontforge and cabextract
 # Tested: Ubuntu Saucy/Trusty/Xenial
 
@@ -71,10 +71,10 @@ if [ $err -ne 1 ]; then
 fi
 
 if [ $err -ne 1 ]; then
-# If you need the Cambria (regular) font, you'll need to convert it to TTF because the font is available
+# If you need the Cambria and Cambria Math (regular) font, you'll need to convert it to TTF because the font is available
 # as a TrueType Collection (TTC) and unless you convert it, you won't be able to use it in LibreOffice for instance. 
-    echo -n ":: Converting 'Cambria Regular' (TTC - TrueType Collection) to TrueType (TTF)... "
-    fontforge -lang=ff -c 'Open("cambria.ttc(Cambria)"); Generate("cambria.ttf"); Close();' &> /dev/null
+    echo -n ":: Converting 'Cambria Regular' and 'Cambria Math Regular' (TTC - TrueType Collection) to TrueType (TTF)... "
+    fontforge -lang=ff -c 'Open("cambria.ttc(Cambria)"); Generate("cambria.ttf"); Close(); Open("cambria.ttc(Cambria Math)"); Generate("cambriamath.ttf"); Close();' &> /dev/null
     if [ $? -ne 0 ]; then
         echo "Error: Can't convert file 'combria.ttc'."
         err=1

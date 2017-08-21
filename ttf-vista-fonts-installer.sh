@@ -1,6 +1,6 @@
 #!/bin/bash
 # Author: Maxwel Leite
-# Website: http://needforbits.tumblr.com/
+# Website: http://needforbits.wordpress.com/
 # Description: Script to install Microsoft Vista TrueType Fonts (TTF) aka Microsoft’s ClearType fonts on Ubuntu distros
 #              Microsoft added a group of new "ClearType Fonts" to Windows with Windows Vista and Office 2007.
 #              These fonts are named Constantia, Corbel, Calibri, Cambria (and Cambria Math), Candara, and Consolas. 

@@ -6,7 +6,8 @@
 #              These fonts are named Constantia, Corbel, Calibri, Cambria (and Cambria Math), Candara, and Consolas. 
 #              Calibri became the default font on Microsoft Word 2007, and it’s still the default font on Word 2016 today.
 # Dependencies: wget, fontforge and cabextract
-# Tested: Ubuntu Saucy/Trusty/Xenial
+# Note: Microsoft no longer provides the PowerPoint Viewer 2007 (v12.0.4518.1014) or any version anymore for download
+# Tested: Ubuntu Saucy/Trusty/Xenial/Bionic
 
 output_dir="/usr/share/fonts/truetype/vista"
 tmp_dir="/tmp/fonts-vista"
@@ -43,7 +44,7 @@ cd "$tmp_dir"
 err=0
 
 echo -e "\n:: Downloading PowerPoint Viewer...\n"
-wget -O "$file" http://download.microsoft.com/download/c/3/0/c30e1cd2-e56a-4161-9e81-34079ab799a3/PowerPointViewer.exe
+wget -O "$file" https://www.filehorse.com/download/file/O77MNIJPdI7h6IOGAxSJnU8FRKedLkjbePmtUckN_d8/ referer="https://www.filehorse.com/download-powerpoint-viewer/3907/"
 if [ $? -ne 0 ]; then
     rm -f "$file"
     echo -e "\nError: Download failed!?\n"

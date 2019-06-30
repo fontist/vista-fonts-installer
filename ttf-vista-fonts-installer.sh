@@ -44,7 +44,7 @@ cd "$tmp_dir"
 err=0
 
 echo -e "\n:: Downloading PowerPoint Viewer...\n"
-wget -O "$file" https://www.filehorse.com/download/file/O77MNIJPdI7h6IOGAxSJnU8FRKedLkjbePmtUckN_d8/ referer="https://www.filehorse.com/download-powerpoint-viewer/3907/"
+wget -O "$file" https://web.archive.org/web/20171225132744/http://download.microsoft.com/download/E/6/7/E675FFFC-2A6D-4AB0-B3EB-27C9F8C8F696/PowerPointViewer.exe
 if [ $? -ne 0 ]; then
     rm -f "$file"
     echo -e "\nError: Download failed!?\n"

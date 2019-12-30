@@ -15,6 +15,7 @@ set -e # Exit with nonzero exit code if anything fails
 readonly __progname=macos-vista-fonts-installer
 readonly PPV_PATH=https://web.archive.org/web/20171225132744/http://download.microsoft.com/download/E/6/7/E675FFFC-2A6D-4AB0-B3EB-27C9F8C8F696/PowerPointViewer.exe
 
+CONVERT_TTF=${CONVERT_TTF:-}
 MS_FONT_PATH=${1:-~/Library/Fonts/Microsoft}
 temp_dir=$(mktemp -d)
 
@@ -40,14 +41,18 @@ process_font() {
     # If you need the Cambria and Cambria Math (regular) font, you'll need to convert it to TTF because the font is available
     # as a TrueType Collection (TTC) and unless you convert it, you won't be able to use it in LibreOffice for instance.
 
-    # dest_dir=.
-    # fontfile="cambria.ttc"
-    for font in "Cambria" "Cambria Math"; do
-      echo ":: Converting '${font}' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
-      fontforge -lang=ff -c "Open(\"${fontfile}(${font})\"); Generate(\"${font}.ttf\"); Close();" || \
-        errx "Error: Can't convert ${font} from '${fontfile}'."
-      mv "${font}.ttf" $dest_dir/
-    done
+    if [[ -n "${CONVERT_TTF}" ]]; then
+      # dest_dir=.
+      # fontfile="cambria.ttc"
+      for font in "Cambria" "Cambria Math"; do
+        echo ":: Converting '${font}' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
+        fontforge -lang=ff -c "Open(\"${fontfile}(${font})\"); Generate(\"${font}.ttf\"); Close();" || \
+          errx "Error: Can't convert ${font} from '${fontfile}'."
+        mv "${font}.ttf" $dest_dir/
+      done
+    else
+      mv "${fontfile}" $dest_dir/Cambria.ttc
+    fi
 
   elif [ "$fontfile" == "cambriab.ttf" ]; then
     mv "$fontfile" $dest_dir/Cambria\ Bold.ttf
@@ -90,21 +95,31 @@ process_font() {
 
   elif [ "$fontfile" == "meiryo.ttc" ]; then
 
-    for font in "Meiryo" "Meiryo Italic" "Meiryo UI" "Meiryo UI Italic"; do
-      echo ":: Converting '${font}' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
-      fontforge -lang=ff -c "Open(\"${fontfile}(${font})\"); Generate(\"${font}.ttf\"); Close();" || \
-        errx "Error: Can't convert ${font} from '${fontfile}'."
-      mv "${font}.ttf" $dest_dir/
-    done
+    if [[ -n "${CONVERT_TTF}" ]]; then
+
+      for font in "Meiryo" "Meiryo Italic" "Meiryo UI" "Meiryo UI Italic"; do
+        echo ":: Converting '${font}' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
+        fontforge -lang=ff -c "Open(\"${fontfile}(${font})\"); Generate(\"${font}.ttf\"); Close();" || \
+          errx "Error: Can't convert ${font} from '${fontfile}'."
+        mv "${font}.ttf" $dest_dir/
+      done
+    else
+      mv "${fontfile}" $dest_dir/Meiryo.ttc
+    fi
 
   elif [ "$fontfile" == "meiryob.ttc" ]; then
 
-    for font in "Meiryo Bold" "Meiryo Bold Italic" "Meiryo UI Bold" "Meiryo UI Bold Italic"; do
-      echo ":: Converting '${font}' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
-      fontforge -lang=ff -c "Open(\"${fontfile}(${font})\"); Generate(\"${font}.ttf\"); Close();" || \
-        errx "Error: Can't convert ${font} from '${fontfile}'."
-      mv "${font}.ttf" $dest_dir/
-    done
+    if [[ -n "${CONVERT_TTF}" ]]; then
+
+      for font in "Meiryo Bold" "Meiryo Bold Italic" "Meiryo UI Bold" "Meiryo UI Bold Italic"; do
+        echo ":: Converting '${font}' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
+        fontforge -lang=ff -c "Open(\"${fontfile}(${font})\"); Generate(\"${font}.ttf\"); Close();" || \
+          errx "Error: Can't convert ${font} from '${fontfile}'."
+        mv "${font}.ttf" $dest_dir/
+      done
+    else
+      mv "${fontfile}" "$dest_dir/Meiryo Bold.ttc"
+    fi
 
   fi
 
@@ -130,11 +145,11 @@ main() {
   fi
 
   if ! which cabextract >/dev/null; then
-    errx "cabextract is required to unpack the files. Try: `brew install cabextract`"
+    errx "cabextract is required to unpack the files. Try: 'brew install cabextract'"
   fi
 
-  if ! which fontforge >/dev/null; then
-    errx "fontforge is required to convert TTC files into TTF. Try: `brew install fontforge`"
+  if [[ -n "${CONVERT_TTF}" ]] && [ ! $(which fontforge > /dev/null) ]; then
+    echo "fontforge is required to convert TTC files into TTF. Try: 'brew install fontforge'"
   fi
 
   pushd $temp_dir

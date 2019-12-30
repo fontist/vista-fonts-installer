@@ -39,15 +39,15 @@ process_font() {
 
     # If you need the Cambria and Cambria Math (regular) font, you'll need to convert it to TTF because the font is available
     # as a TrueType Collection (TTC) and unless you convert it, you won't be able to use it in LibreOffice for instance.
-    echo ":: Converting 'Cambria Regular' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
-    fontforge -lang=ff -c 'Open("cambria.ttc(Cambria)"); Generate("Cambria.ttf"); Close();' || \
-      errx "Error: Can't convert Cambria Regular from 'cambria.ttc'."
 
-    echo ":: Converting 'Cambria Math Regular' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
-    fontforge -lang=ff -c 'Open("cambria.ttc(Cambria Math)"); Generate("Cambria Math.ttf"); Close();' || \
-      errx "Error: Can't convert Cambria Math Regular from 'cambria.ttc'."
-
-    mv Cambria.ttf Cambria\ Math.ttf $dest_dir/
+    # dest_dir=.
+    # fontfile="cambria.ttc"
+    for font in "Cambria" "Cambria Math"; do
+      echo ":: Converting '${font}' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
+      fontforge -lang=ff -c "Open(\"${fontfile}(${font})\"); Generate(\"${font}.ttf\"); Close();" || \
+        errx "Error: Can't convert ${font} from '${fontfile}'."
+      mv "${font}.ttf" $dest_dir/
+    done
 
   elif [ "$fontfile" == "cambriab.ttf" ]; then
     mv "$fontfile" $dest_dir/Cambria\ Bold.ttf
@@ -87,29 +87,24 @@ process_font() {
     mv "$fontfile" $dest_dir/Corbel\ Italic.ttf
   elif [ "$fontfile" == "corbelz.ttf" ]; then
     mv "$fontfile" $dest_dir/Corbel\ Bold\ Italic.ttf
+
   elif [ "$fontfile" == "meiryo.ttc" ]; then
 
-    echo ":: Converting 'Meiryo' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
-    fontforge -lang=ff -c 'Open("meiryo.ttc(Meiryo)"); Generate("Meiryo.ttf"); Close();' || \
-      errx "Error: Can't convert Meiryo from 'meiryo.ttc'."
-
-    echo ":: Converting 'Meiryo Italic' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
-    fontforge -lang=ff -c 'Open("meiryo.ttc(Meiryo Italic)"); Generate("Meiryo Italic.ttf"); Close();' || \
-      errx "Error: Can't convert Meiryo Italic from 'meiryo.ttc'."
-
-    mv Meiryo.ttf Meiryo\ Italic.ttf $dest_dir/
+    for font in "Meiryo" "Meiryo Italic" "Meiryo UI" "Meiryo UI Italic"; do
+      echo ":: Converting '${font}' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
+      fontforge -lang=ff -c "Open(\"${fontfile}(${font})\"); Generate(\"${font}.ttf\"); Close();" || \
+        errx "Error: Can't convert ${font} from '${fontfile}'."
+      mv "${font}.ttf" $dest_dir/
+    done
 
   elif [ "$fontfile" == "meiryob.ttc" ]; then
 
-    echo ":: Converting 'Meiryo Bold' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
-    fontforge -lang=ff -c 'Open("meiryob.ttc(Meiryo Bold)"); Generate("Meiryo Bold.ttf"); Close();' || \
-      errx "Error: Can't convert Meiryo Bold from 'meiryob.ttc'."
-
-    echo ":: Converting 'Meiryo Bold Italic' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
-    fontforge -lang=ff -c 'Open("meiryob.ttc(Meiryo Bold Italic)"); Generate("Meiryo Bold Italic.ttf"); Close();' || \
-      errx "Error: Can't convert Meiryo Bold Italic from 'meiryob.ttc'."
-
-    mv Meiryo\ Bold.ttf Meiryo\ Bold\ Italic.ttf $dest_dir/
+    for font in "Meiryo Bold" "Meiryo Bold Italic" "Meiryo UI Bold" "Meiryo UI Bold Italic"; do
+      echo ":: Converting '${font}' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
+      fontforge -lang=ff -c "Open(\"${fontfile}(${font})\"); Generate(\"${font}.ttf\"); Close();" || \
+        errx "Error: Can't convert ${font} from '${fontfile}'."
+      mv "${font}.ttf" $dest_dir/
+    done
 
   fi
 

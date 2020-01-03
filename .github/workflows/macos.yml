@@ -1,0 +1,26 @@
+name: macos
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install brew packages
+        run: |
+          brew install cabextract
+          brew install fontforge
+
+      - name: Run script
+        run: |
+          ./vista-fonts-installer.sh
+
+      # - name: Test if directory is created with desired fonts
+      #   run: |
+      #     TODO ...

@@ -1,0 +1,37 @@
+name: ubuntu
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+name: macos
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install prerequisite packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl cabextract fontforge
+
+      - name: Run script
+        run: |
+          ./vista-fonts-installer.sh
+
+      # - name: Test if directory is created with desired fonts
+      #   run: |
+      #     TODO ...

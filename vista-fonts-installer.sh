@@ -5,6 +5,7 @@ readonly __progname=macos-vista-fonts-installer
 readonly PPV_PATH_1=https://web.archive.org/web/20171225132744/http://download.microsoft.com/download/E/6/7/E675FFFC-2A6D-4AB0-B3EB-27C9F8C8F696/PowerPointViewer.exe
 PPV_PATH_2=https://www.dropbox.com/s/dl/6lclhxpydwgkjzh/PowerPointViewer.exe?dl=1
 PPV_PATH=${PPV_PATH:-$PPV_PATH_1}
+PPV_SHA=249473568eba7a1e4f95498acba594e0f42e6581add4dead70c1dfb908a09423
 
 CONVERT_TTF=${CONVERT_TTF:-}
 
@@ -41,7 +42,7 @@ errx() {
   exit 1
 }
 
-process_font_ubuntu() {
+process_font_raw() {
   fontfile="$1"
   dest_dir="$2"
   destname="$fontfile"
@@ -115,57 +116,42 @@ process_font_ubuntu() {
   fi
 
   mv -f "$destname" "$dest_dir/" || \
-    errx "Cant move $destname into $dest_dir"
+    errx "Cant move \"$destname\" into \"$dest_dir\""
 
-  echo "Processing $fontfile complete." >&2
+  echo "Processing \"$fontfile\" into \"$dest_dir/$destname\" complete." >&2
 }
 
-process_font_macos() {
+process_font_rename() {
   fontfile="$1"
-  dest_dir="$2"
   destname="$fontfile"
 
-  if [[ -n "${CONVERT_TTF}" ]]; then
-
-    if [ "$fontfile" == "cambria.ttc" ]; then
-
-      for font in "Cambria" "Cambria Math"; do
-        destname="${font}.ttf"
-        echo ":: Converting '${font}' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
-        fontforge -lang=ff -c "Open(\"${fontfile}(${font})\"); Generate(\"${destname}\"); Close();" || \
-          errx "Can't convert '${destname}' from '${fontfile}'."
-        mv -f "${destname}" "$dest_dir/"
-      done
-
-      return
-
-    elif [ "$fontfile" == "meiryo.ttc" ]; then
-
-      for font in "Meiryo" "Meiryo Italic" "Meiryo UI" "Meiryo UI Italic"; do
-        destname="${font}.ttf"
-        echo ":: Converting '${font}' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
-        fontforge -lang=ff -c "Open(\"${fontfile}(${font})\"); Generate(\"${destname}\"); Close();" || \
-          errx "Can't convert '${destname}' from '${fontfile}'."
-        mv -f "${destname}" "$dest_dir/"
-      done
-
-      return
-
-    elif [ "$fontfile" == "meiryob.ttc" ]; then
-
-      for font in "Meiryo Bold" "Meiryo Bold Italic" "Meiryo UI Bold" "Meiryo UI Bold Italic"; do
-        destname="${font}.ttf"
-        echo ":: Converting '${font}' (TTC - TrueType Collection) to TrueType (TTF)... " >&2
-        fontforge -lang=ff -c "Open(\"${fontfile}(${font})\"); Generate(\"${destname}\"); Close();" || \
-          errx "Can't convert '${destname}' from '${fontfile}'."
-        mv -f "${destname}" "$dest_dir/"
-      done
-
-      return
-    fi
-  fi
-
-  if [ "$fontfile" == "calibri.ttf" ]; then
+  if [ "$fontfile" == "cambria.ttc" ]; then
+    destname="Cambria.ttc"
+  elif [ "$fontfile" == "meiryo.ttc" ]; then
+    destname="Meiryo.ttc"
+  elif [ "$fontfile" == "meiryob.ttc" ]; then
+    destname="Meiryo Bold.ttc"
+  elif [ "$fontfile" == "cambria.ttf" ]; then
+    destname="Cambria.ttf"
+  elif [ "$fontfile" == "cambriamath.ttf" ]; then
+    destname="Cambria Math.ttf"
+  elif [ "$fontfile" == "meiryo.ttf" ]; then
+    destname="Meiryo.ttf"
+  elif [ "$fontfile" == "meiryoi.ttf" ]; then
+    destname="Meiryo Italic.ttf"
+  elif [ "$fontfile" == "meiryoui.ttf" ]; then
+    destname="Meiryo UI.ttf"
+  elif [ "$fontfile" == "meiryouii.ttf" ]; then
+    destname="Meiryo UI Italic.ttf"
+  elif [ "$fontfile" == "meiryob.ttf" ]; then
+    destname="Meiryo Bold.ttf"
+  elif [ "$fontfile" == "meiryoz.ttf" ]; then
+    destname="Meiryo Bold Italic.ttf"
+  elif [ "$fontfile" == "meiryouib.ttf" ]; then
+    destname="Meiryo UI Bold.ttf"
+  elif [ "$fontfile" == "meiryouiz.ttf" ]; then
+    destname="Meiryo UI Bold Italic.ttf"
+  elif [ "$fontfile" == "calibri.ttf" ]; then
     destname="Calibri.ttf"
   elif [ "$fontfile" == "calibrib.ttf" ]; then
     destname="Calibri Bold.ttf"
@@ -211,12 +197,16 @@ process_font_macos() {
     destname="Corbel Italic.ttf"
   elif [ "$fontfile" == "corbelz.ttf" ]; then
     destname="Corbel Bold Italic.ttf"
+  else
+    # This file is not supported
+    echo "Renaming \"$fontfile\" skipped as it is not supported." >&2
+    return
   fi
 
-  mv -f "$fontfile" "$dest_dir/$destname" || \
-    errx "Can't move $fontfile into \"$dest_dir/$destname\"; PWD($(pwd))"
+  mv -f "$fontfile" "$destname" || \
+    errx "Can't rename \"$fontfile\" into \"$destname\"; PWD($(pwd))"
 
-  echo "Processing $fontfile complete." >&2
+  echo "Renaming \"$fontfile\" into \"$destname\" complete." >&2
 }
 
 
@@ -234,6 +224,12 @@ main() {
     fi
   else
     errx "platform ${platform} is not supported. Please contribute a fix!"
+  fi
+
+
+  RENAME_FONTS=${RENAME_FONTS:-}
+  if [ "${RENAME_FONTS}" == "" ] && [ "${platform}" == "macos" ]; then
+    RENAME_FONTS="true"
   fi
 
   MS_FONT_PATH=${1:-$MS_FONT_PATH}
@@ -286,14 +282,30 @@ main() {
   pushd $temp_dir
   file=$(basename ${PPV_PATH})
 
-  echo -e "\n:: Downloading ${file} from ${PPV_PATH}..."
-  curl --connect-timeout 5 -L ${PPV_PATH} -o ${file} || \
-    curl --connect-timeout 5 -L ${PPV_PATH_2} -o ${file} || \
-      errx "\nDownload failed.\n"
+  for url in ${PPV_PATH} ${PPV_PATH_2}; do
+    echo -e "\n:: Downloading ${file} from ${url}..."
+    curl --connect-timeout 5 -L ${url} -o ${file}
 
-  echo -e "Download Done!\n"
+    if [ ! -f ${file} ]; then
+      echo "\nDownload failed from ${url}, trying next." >&2
+      continue
+    fi
 
-  echo -n ":: Extracting fonts from ${file}... "
+    # Check checksum of file
+    echo "249473568eba7a1e4f95498acba594e0f42e6581add4dead70c1dfb908a09423  ${file}" > ${file}.sha256
+    if [ -n "$(shasum -a 256 -c ${file}.sha256 | grep FAILED)" ]; then
+      echo -e "\nDownload from ${url} had bad checksum, trying next.\n" >&2
+      continue
+    else
+      echo -e "\nDownload from ${url} succeeded!\n" >&2
+      break
+    fi
+  done
+
+  [ ! -f ${file} ] && \
+    errx "\nDownload failed from all URLs.\n"
+
+  echo -n ":: Extracting fonts from ${file}... " >&2
 
   cabextract -t "$file" || \
     errx "Can't extract from ${file}. Corrupted download?"
@@ -307,9 +319,19 @@ main() {
   echo -n ":: Installing... " >&2
 
   for fontfile in $(find . -maxdepth 1 -type f -name '*.tt*' -exec basename \{} \;); do
-    process_font_${platform} $fontfile $MS_FONT_PATH || \
+    process_font_raw $fontfile $MS_FONT_PATH || \
       errx "Process font $fontfile failed, exiting.".
   done
+
+  if [[ -n "${RENAME_FONTS}" ]]; then
+    pushd $MS_FONT_PATH
+    ls -al
+    for fontfile in $(find . -maxdepth 1 -type f -name '*.tt*' -exec basename \{} \;); do
+      process_font_rename $fontfile $MS_FONT_PATH || \
+        errx "Rename font $fontfile failed, exiting.".
+    done
+    popd
+  fi
 
   # echo -n ":: Cleanup... "
   # cd - &> /dev/null

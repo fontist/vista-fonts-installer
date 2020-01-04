@@ -97,6 +97,7 @@ By default, the fonts will be installed to `~/Library/Fonts/Microsoft`.
 The following environment variables are available to configure installation behavior:
 
 `CONVERT_TTF`:: Set to `true` to expand all TTC files into TTF files (e.g. `export CONVERT_TTF=true`).
+`RENAME_FONTS`:: Set to `true` to rename TTC/TTF files into their font name (e.g. `cambriai.ttf` will become `Cambria Italic.ttf`). For macOS this is by default `true`.
 `MS_FONT_PATH`:: Set to your desired installation path.
 
 e.g.
@@ -104,6 +105,7 @@ e.g.
 [source,sh]
 ----
 export CONVERT_TTF=true
+export RENAME_FONTS=true
 export MS_FONT_PATH=/Library/Fonts/Microsoft # this is where MS Office installs to
 curl -Ls https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
 ----
@@ -190,6 +192,7 @@ By default, the fonts will be installed to `/usr/share/fonts/truetype/vista`.
 The following environment variables are available to configure installation behavior:
 
 `CONVERT_TTF`:: Set to `true` to expand all TTC files into TTF files (e.g. `export CONVERT_TTF=true`).
+`RENAME_FONTS`:: Set to `true` to rename TTC/TTF files into their font name (e.g. `cambriai.ttf` will become `Cambria Italic.ttf`).
 `MS_FONT_PATH`:: Set to your desired installation path.
 
 e.g.

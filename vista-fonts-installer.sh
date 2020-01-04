@@ -47,7 +47,7 @@ process_font_raw() {
   dest_dir="$2"
   destname="$fontfile"
 
-  if [[ -n "${CONVERT_TTF}" ]]; then
+  if [ "${CONVERT_TTF}" == "true" ]; then
 
     if [ "$fontfile" == "cambria.ttc" ]; then
 
@@ -268,7 +268,7 @@ main() {
     esac
   fi
 
-  if [[ -n "${CONVERT_TTF}" ]]; then
+  if [ "${CONVERT_TTF}" == "true" ]; then
     if [ ! $(which fontforge) ]; then
       case ${platform} in
         macos*) errx "fontforge is required to convert TTC files into TTF. Try: 'brew install fontforge'" ;;
@@ -323,7 +323,7 @@ main() {
       errx "Process font $fontfile failed, exiting.".
   done
 
-  if [[ -n "${RENAME_FONTS}" ]]; then
+  if [ "${RENAME_FONTS}" == "true" ]; then
     pushd $MS_FONT_PATH
     ls -al
     for fontfile in $(find . -maxdepth 1 -type f -name '*.tt*' -exec basename \{} \;); do

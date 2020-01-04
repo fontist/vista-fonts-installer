@@ -237,18 +237,22 @@ main() {
   MS_FONT_PATH=${1:-$MS_FONT_PATH}
   if [ "${MS_FONT_PATH}" == "" ]; then
     case ${platform} in
-      macos*) MS_FONT_PATH="$(cd ~/; pwd)/Library/Fonts/Microsoft" ;;
+      macos*) MS_FONT_PATH="~/Library/Fonts/Microsoft" ;;
       ubuntu*) MS_FONT_PATH="/usr/share/fonts/truetype/vista" ;;
       # *) ...; exit 1 ;;
     esac
   fi
 
-  # echo "$(cd $(dirname $MS_FONT_PATH))"
-  # MS_FONT_PATH=$(cd "$(dirname "$MS_FONT_PATH")"; pwd)/$(basename "$MS_FONT_PATH")
-
   [[ -d ${MS_FONT_PATH} ]] || \
     mkdir -p ${MS_FONT_PATH} || \
       errx "Unable to write to ${MS_FONT_PATH}."
+
+  # Take the absolute path
+  MS_FONT_PATH="$(cd ${MS_FONT_PATH}; pwd)"
+
+  # echo "$(cd $(dirname $MS_FONT_PATH))"
+  # MS_FONT_PATH=$(cd "$(dirname "$MS_FONT_PATH")"; pwd)/$(basename "$MS_FONT_PATH")
+
 
   echo "Installing fonts to ${MS_FONT_PATH}" >&2
 

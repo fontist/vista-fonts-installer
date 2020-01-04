@@ -92,13 +92,11 @@ As simple as:
 curl -Ls https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
 ----
 
-By default, the fonts will be installed to `~/Library/Fonts/Microsoft`.
-
 The following environment variables are available to configure installation behavior:
 
-`CONVERT_TTF`:: Set to `true` to expand all TTC files into TTF files (e.g. `export CONVERT_TTF=true`).
-`RENAME_FONTS`:: Set to `true` to rename TTC/TTF files into their font name (e.g. `cambriai.ttf` will become `Cambria Italic.ttf`). For macOS this is by default `true`.
-`MS_FONT_PATH`:: Set to your desired installation path.
+`CONVERT_TTF`:: Set to `true` to expand all TTC files into TTF files (e.g. `export CONVERT_TTF=true`). This is by default `false`.
+`RENAME_FONTS`:: Set to `true` to rename TTC/TTF files into their font name (e.g. `cambriai.ttf` will become `Cambria Italic.ttf`). For macOS this is by default `true`. Set to `false` to disable.
+`MS_FONT_PATH`:: Set to your desired installation path. On macOS it is by default set to `~/Library/Fonts/Microsoft`.
 
 e.g.
 
@@ -186,14 +184,12 @@ Or using `sudo`:
 curl -Ls https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | sudo bash
 ----
 
-By default, the fonts will be installed to `/usr/share/fonts/truetype/vista`.
-
 
 The following environment variables are available to configure installation behavior:
 
-`CONVERT_TTF`:: Set to `true` to expand all TTC files into TTF files (e.g. `export CONVERT_TTF=true`).
-`RENAME_FONTS`:: Set to `true` to rename TTC/TTF files into their font name (e.g. `cambriai.ttf` will become `Cambria Italic.ttf`).
-`MS_FONT_PATH`:: Set to your desired installation path.
+`CONVERT_TTF`:: Set to `true` to expand all TTC files into TTF files (e.g. `export CONVERT_TTF=true`). This is by default `false`.
+`RENAME_FONTS`:: Set to `true` to rename TTC/TTF files into their font name (e.g. `cambriai.ttf` will become `Cambria Italic.ttf`). For Ubuntu this is by default `false`. Set to `true` to enable.
+`MS_FONT_PATH`:: Set to your desired installation path. On Ubuntu it is by default set to `/usr/share/fonts/truetype/vista`.
 
 e.g.
 

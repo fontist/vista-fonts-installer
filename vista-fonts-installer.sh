@@ -338,7 +338,7 @@ main() {
   rm -rf "$temp_dir" || \
     errx "Unable to remove temp directory ${temp_dir}."
 
-  if [ "${platform}" == "ubuntu" ]; then
+  if [ "${platform}" == "ubuntu" ] && [ ! $(which fc-cache) ; then
     echo ":: Cleaning the font cache... " >&2
     fc-cache -f "$MS_FONT_PATH" || \
       errx "Unable to clean font cache via 'fc-cache'. Exiting."

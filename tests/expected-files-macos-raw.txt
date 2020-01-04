@@ -1,0 +1,26 @@
+Calibri Bold Italic.ttf
+Calibri Bold.ttf
+Calibri Italic.ttf
+Calibri.ttf
+Cambria Bold Italic.ttf
+Cambria Bold.ttf
+Cambria Italic.ttf
+Candara Bold Italic.ttf
+Candara Bold.ttf
+Candara Italic.ttf
+Candara.ttf
+Consola Bold Italic.ttf
+Consola Bold.ttf
+Consola Italic.ttf
+Consola.ttf
+Constantia Bold Italic.ttf
+Constantia Bold.ttf
+Constantia Italic.ttf
+Constantia.ttf
+Corbel Bold Italic.ttf
+Corbel Bold.ttf
+Corbel Italic.ttf
+Corbel.ttf
+cambria.ttc
+meiryo.ttc
+meiryob.ttc

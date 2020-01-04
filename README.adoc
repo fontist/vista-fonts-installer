@@ -89,7 +89,7 @@ As simple as:
 
 [source,sh]
 ----
-curl https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
+curl -Ls https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
 ----
 
 By default, the fonts will be installed to `~/Library/Fonts/Microsoft`.
@@ -105,7 +105,7 @@ e.g.
 ----
 export CONVERT_TTF=true
 export MS_FONT_PATH=/Library/Fonts/Microsoft # this is where MS Office installs to
-curl https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
+curl -Ls https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
 ----
 
 
@@ -113,7 +113,7 @@ You can also run this to set the installation path:
 
 [source,sh]
 ----
-curl -L -o vista-fonts-installer.sh https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh
+curl -Ls -o vista-fonts-installer.sh https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh
 chmod +x vista-fonts-installer.sh
 ./vistra-fonts-installer.sh [desired-path]
 ----
@@ -175,13 +175,13 @@ As simple as:
 [source,sh]
 ----
 # as root
-curl https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
+curl -Ls https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
 ----
 
 Or using `sudo`:
 [source,sh]
 ----
-curl https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | sudo bash
+curl -Ls https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | sudo bash
 ----
 
 By default, the fonts will be installed to `/usr/share/fonts/truetype/vista`.
@@ -198,13 +198,13 @@ e.g.
 ----
 export CONVERT_TTF=true
 export MS_FONT_PATH=~/fonts/truetype/vista
-curl https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
+curl -Ls https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
 ----
 
 
 Alternatively, you can run:
 ----
-curl -L -o vista-fonts-installer.sh https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh
+curl -Ls -o vista-fonts-installer.sh https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh
 chmod +x vista-fonts-installer.sh
 ./vistra-fonts-installer.sh [desired-path]
 ----
@@ -264,6 +264,7 @@ Meiryo UI:: `meiryoui.ttf`
 Ribose Inc.
 
 This script is based on:
+
 * Maxwel Leite's https://gist.github.com/maxwelleite/10774746/raw/ttf-vista-fonts-installer.sh
 * Ronald Tse's https://gist.githubusercontent.com/ronaldtse/b53c05030a1eee94087aa9f80592b88b/raw/macos-vista-fonts-installer.sh (which is also based on Leite's script)
 

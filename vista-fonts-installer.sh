@@ -1,15 +1,4 @@
 #!/bin/bash
-# Author: Maxwel Leite
-# Adapted to macOS by Ronald Tse
-# Website: http://needforbits.wordpress.com/
-# Description: Script to install Microsoft Vista TrueType Fonts (TTF) aka Microsoft’s ClearType fonts on Ubuntu distros
-#              Microsoft added a group of new "ClearType Fonts" to Windows with Windows Vista and Office 2007.
-#              These fonts are named Constantia, Corbel, Calibri, Cambria (and Cambria Math), Candara, and Consolas.
-#              Calibri became the default font on Microsoft Word 2007, and it’s still the default font on Word 2016 today.
-# Dependencies: wget, fontforge and cabextract
-# Note: Microsoft no longer provides the PowerPoint Viewer 2007 (v12.0.4518.1014) or any version anymore for download
-# Tested: macOS 10.15.2
-
 set -e # Exit with nonzero exit code if anything fails
 
 readonly __progname=macos-vista-fonts-installer
@@ -177,49 +166,49 @@ process_font_macos() {
   if [ "$fontfile" == "calibri.ttf" ]; then
     destname="Calibri.ttf"
   elif [ "$fontfile" == "calibrib.ttf" ]; then
-    destname="Calibri\ Bold.ttf"
+    destname="Calibri Bold.ttf"
   elif [ "$fontfile" == "calibrii.ttf" ]; then
-    destname="Calibri\ Italic.ttf"
+    destname="Calibri Italic.ttf"
   elif [ "$fontfile" == "calibriz.ttf" ]; then
-    destname="Calibri\ Bold\ Italic.ttf"
+    destname="Calibri Bold Italic.ttf"
   elif [ "$fontfile" == "cambriab.ttf" ]; then
-    destname="Cambria\ Bold.ttf"
+    destname="Cambria Bold.ttf"
   elif [ "$fontfile" == "cambriai.ttf" ]; then
-    destname="Cambria\ Italic.ttf"
+    destname="Cambria Italic.ttf"
   elif [ "$fontfile" == "cambriaz.ttf" ]; then
-    destname="Cambria\ Bold\ Italic.ttf"
+    destname="Cambria Bold Italic.ttf"
   elif [ "$fontfile" == "candara.ttf" ]; then
     destname="Candara.ttf"
   elif [ "$fontfile" == "candarab.ttf" ]; then
-    destname="Candara\ Bold.ttf"
+    destname="Candara Bold.ttf"
   elif [ "$fontfile" == "candarai.ttf" ]; then
-    destname="Candara\ Italic.ttf"
+    destname="Candara Italic.ttf"
   elif [ "$fontfile" == "candaraz.ttf" ]; then
-    destname="Candara\ Bold\ Italic.ttf"
+    destname="Candara Bold Italic.ttf"
   elif [ "$fontfile" == "consola.ttf" ]; then
     destname="Consola.ttf"
   elif [ "$fontfile" == "consolab.ttf" ]; then
-    destname="Consola\ Bold.ttf"
+    destname="Consola Bold.ttf"
   elif [ "$fontfile" == "consolai.ttf" ]; then
-    destname="Consola\ Italic.ttf"
+    destname="Consola Italic.ttf"
   elif [ "$fontfile" == "consolaz.ttf" ]; then
-    destname="Consola\ Bold\ Italic.ttf"
+    destname="Consola Bold Italic.ttf"
   elif [ "$fontfile" == "constan.ttf" ]; then
-    destname="Constan.ttf"
+    destname="Constantia.ttf"
   elif [ "$fontfile" == "constanb.ttf" ]; then
-    destname="Constan\ Bold.ttf"
+    destname="Constantia Bold.ttf"
   elif [ "$fontfile" == "constani.ttf" ]; then
-    destname="Constan\ Italic.ttf"
+    destname="Constantia Italic.ttf"
   elif [ "$fontfile" == "constanz.ttf" ]; then
-    destname="Constan\ Bold\ Italic.ttf"
+    destname="Constantia Bold Italic.ttf"
   elif [ "$fontfile" == "corbel.ttf" ]; then
     destname="Corbel.ttf"
   elif [ "$fontfile" == "corbelb.ttf" ]; then
-    destname="Corbel\ Bold.ttf"
+    destname="Corbel Bold.ttf"
   elif [ "$fontfile" == "corbeli.ttf" ]; then
-    destname="Corbel\ Italic.ttf"
+    destname="Corbel Italic.ttf"
   elif [ "$fontfile" == "corbelz.ttf" ]; then
-    destname="Corbel\ Bold\ Italic.ttf"
+    destname="Corbel Bold Italic.ttf"
   fi
 
   mv -f "$fontfile" "$dest_dir/$destname" || \
@@ -245,7 +234,7 @@ main() {
     errx "platform ${platform} is not supported. Please contribute a fix!"
   fi
 
-  MS_FONT_PATH="$1"
+  MS_FONT_PATH=${1:-$MS_FONT_PATH}
   if [ "${MS_FONT_PATH}" == "" ]; then
     case ${platform} in
       macos*) MS_FONT_PATH="$(cd ~/; pwd)/Library/Fonts/Microsoft" ;;

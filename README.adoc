@@ -1,0 +1,269 @@
+= Vista TrueType fonts installer (macOS, Ubuntu)
+
+image:https://github.com/metanorma/vista-fonts-installer/workflows/ubuntu/badge.svg["Build Status", link="https://github.com/metanorma/vista-fonts-installer/actions?workflow=ubuntu"]
+image:https://github.com/metanorma/vista-fonts-installer/workflows/macos/badge.svg["Build Status", link="https://github.com/metanorma/vista-fonts-installer/actions?workflow=macos"]
+
+== Purpose
+
+The `vist-fonts-installer.sh` script is used to install the common
+Microsoft Vista Fonts on macOS and Ubuntu in a way compliant with
+Microsoft's font licenses.
+
+== Background
+
+Microsoft added a family of new "`ClearType Fonts`" to Windows with Windows Vista and Office 2007.
+
+They are:
+
+* Constantia
+* Corbel
+* Calibri
+* Cambria (with Cambria Math for math)
+* Candara
+* Consolas (fixed-width font)
+* Meiryo (rendering for East Asian characters)
+* Meiryo UI (UI font for East Asian characters)
+
+Calibri became the default font in Microsoft Word since Word 2007 (and is still the default in Word 2016).
+
+These fonts are available from Microsoft's "`PowerPoint Viewer 2007`" (v12.0.4518.1014) which is
+offered as a free download.
+
+This setup script does the following:
+
+1. Downloads the latest Microsoft's "`PowerPointViewer.exe`" using Internet Archive
+from the link (the file has been taken offline):
+https://web.archive.org/web/20171225132744/http://download.microsoft.com/download/E/6/7/E675FFFC-2A6D-4AB0-B3EB-27C9F8C8F696/PowerPointViewer.exe
+
+2. Extracts (and processes) the fonts for use in macOS and Ubuntu.
+
+
+== Platforms supported
+
+* macOS 10.15.2 (Catalina)
+* Ubuntu 18.04
+
+
+== Prerequisites
+
+=== macOS
+
+Use Homebrew to install the prerequisites:
+
+[source,sh]
+----
+brew install cabextract
+----
+
+Cambria (with Cambria Math), Meiryo and Meiryo UI come in the TTC (TrueType Collection) format. macOS fully supports using TTC fonts. However, if you wish to install them in the TTF format, FontForge is necessary.
+
+To install FontForge:
+
+[source,sh]
+----
+brew install fontforge
+----
+
+
+=== Ubuntu
+
+Cambria (with Cambria Math), Meiryo and Meiryo UI come in the TTC (TrueType Collection) format. Ubuntu does not support using TTC fonts by default, so FontForge is necessary to extract those fonts into TTF.
+
+Use `apt-get` to install the prerequisites:
+
+[source,sh]
+----
+# as root
+apt-get install curl cabextract fontforge
+----
+
+
+
+== Usage
+
+=== General
+
+=== macOS
+
+As simple as:
+
+[source,sh]
+----
+curl https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
+----
+
+By default, the fonts will be installed to `~/Library/Fonts/Microsoft`.
+
+The following environment variables are available to configure installation behavior:
+
+`CONVERT_TTF`:: Set to `true` to expand all TTC files into TTF files (e.g. `export CONVERT_TTF=true`).
+`MS_FONT_PATH`:: Set to your desired installation path.
+
+e.g.
+
+[source,sh]
+----
+export CONVERT_TTF=true
+export MS_FONT_PATH=/Library/Fonts/Microsoft # this is where MS Office installs to
+curl https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
+----
+
+
+You can also run this to set the installation path:
+
+[source,sh]
+----
+curl -L -o vista-fonts-installer.sh https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh
+chmod +x vista-fonts-installer.sh
+./vistra-fonts-installer.sh [desired-path]
+----
+
+
+The installed fonts in macOS will have these names:
+
+TTF:
+
+Calibri Bold Italic:: `Calibri Bold Italic.ttf`
+Calibri Bold:: `Calibri Bold.ttf`
+Calibri Italic:: `Calibri Italic.ttf`
+Calibri:: `Calibri.ttf`
+Cambria Bold Italic:: `Cambria Bold Italic.ttf`
+Cambria Bold:: `Cambria Bold.ttf`
+Cambria Italic:: `Cambria Italic.ttf`
+Candara Bold Italic:: `Candara Bold Italic.ttf`
+Candara Bold:: `Candara Bold.ttf`
+Candara Italic:: `Candara Italic.ttf`
+Candara:: `Candara.ttf`
+Consola Bold Italic:: `Consola Bold Italic.ttf`
+Consola Bold:: `Consola Bold.ttf`
+Consola Italic:: `Consola Italic.ttf`
+Consola:: `Consola.ttf`
+Constantia Bold Italic:: `Constantia Bold Italic.ttf`
+Constantia Bold:: `Constantia Bold.ttf`
+Constantia Italic:: `Constantia Italic.ttf`
+Constantia:: `Constantia.ttf`
+Corbel Bold Italic:: `Corbel Bold Italic.ttf`
+Corbel Bold:: `Corbel Bold.ttf`
+Corbel Italic:: `Corbel Italic.ttf`
+Corbel:: `Corbel.ttf`
+
+TTC as TTC:
+
+Cambria, Cambria Math:: `cambria.ttc`
+Meiryo, Meiryo Italic, Meiryo UI, Meiryo UI Italic:: `meiryo.ttc`
+Meiryo Bold, Meiryo Bold Italic, Meiryo UI Bold, Meiryo UI Bold Italic:: `meiryob.ttc`
+
+
+TTC in TTF:
+
+Cambria:: `Cambria.ttf`
+Cambria Math:: `Cambria Math.ttf`
+Meiryo Bold Italic:: `Meiryo Bold Italic.ttf`
+Meiryo Bold:: `Meiryo Bold.ttf`
+Meiryo Italic:: `Meiryo Italic.ttf`
+Meiryo:: `Meiryo.ttf`
+Meiryo UI Bold Italic:: `Meiryo UI Bold Italic.ttf`
+Meiryo UI Bold:: `Meiryo UI Bold.ttf`
+Meiryo UI Italic:: `Meiryo UI Italic.ttf`
+Meiryo UI:: `Meiryo UI.ttf`
+
+
+=== Ubuntu
+
+As simple as:
+
+[source,sh]
+----
+# as root
+curl https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
+----
+
+Or using `sudo`:
+[source,sh]
+----
+curl https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | sudo bash
+----
+
+By default, the fonts will be installed to `/usr/share/fonts/truetype/vista`.
+
+
+The following environment variables are available to configure installation behavior:
+
+`CONVERT_TTF`:: Set to `true` to expand all TTC files into TTF files (e.g. `export CONVERT_TTF=true`).
+`MS_FONT_PATH`:: Set to your desired installation path.
+
+e.g.
+
+[source,sh]
+----
+export CONVERT_TTF=true
+export MS_FONT_PATH=~/fonts/truetype/vista
+curl https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
+----
+
+
+Alternatively, you can run:
+----
+curl -L -o vista-fonts-installer.sh https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh
+chmod +x vista-fonts-installer.sh
+./vistra-fonts-installer.sh [desired-path]
+----
+
+
+The installed fonts in Ubuntu will have these names:
+
+Calibri Bold Italic:: `calibriz.ttf`
+Calibri Bold:: `calibrib.ttf`
+Calibri Italic:: `calibrii.ttf`
+Calibri:: `calibri.ttf`
+Cambria Bold Italic:: `cambriaz.ttf`
+Cambria Bold:: `cambriab.ttf`
+Cambria Italic:: `cambriai.ttf`
+Candara Bold Italic:: `candaraz.ttf`
+Candara Bold:: `candarab.ttf`
+Candara Italic:: `candarai.ttf`
+Candara:: `candara.ttf`
+Consola Bold Italic:: `consolaz.ttf`
+Consola Bold:: `consolab.ttf`
+Consola Italic:: `consolai.ttf`
+Consola:: `consola.ttf`
+Constantia Bold Italic:: `constanz.ttf`
+Constantia Bold:: `constanb.ttf`
+Constantia Italic:: `constani.ttf`
+Constantia:: `constan.ttf`
+Corbel Bold Italic:: `corbelz.ttf`
+Corbel Bold:: `corbelb.ttf`
+Corbel Italic:: `corbeli.ttf`
+Corbel:: `corbel.ttf`
+
+
+TTC as TTC:
+
+Cambria, Cambria Math:: `cambria.ttc`
+Meiryo, Meiryo Italic, Meiryo UI, Meiryo UI Italic:: `meiryo.ttc`
+Meiryo Bold, Meiryo Bold Italic, Meiryo UI Bold, Meiryo UI Bold Italic:: `meiryob.ttc`
+
+
+TTC in TTF:
+
+Cambria:: `cambria.ttf`
+Cambria Math:: `cambriam.ttf`
+Meiryo Bold Italic:: `meiryoz.ttf`
+Meiryo Bold:: `meiryob.ttf`
+Meiryo Italic:: `meiryoi.ttf`
+Meiryo:: `meiryo.ttf`
+Meiryo UI Bold Italic:: `meiryouiz.ttf`
+Meiryo UI Bold:: `meiryouib.ttf`
+Meiryo UI Italic:: `meiryouii.ttf`
+Meiryo UI:: `meiryoui.ttf`
+
+
+
+== Copyright
+
+Ribose Inc.
+
+This script is based on:
+* Maxwel Leite's https://gist.github.com/maxwelleite/10774746/raw/ttf-vista-fonts-installer.sh
+* Ronald Tse's https://gist.githubusercontent.com/ronaldtse/b53c05030a1eee94087aa9f80592b88b/raw/macos-vista-fonts-installer.sh (which is also based on Leite's script)
+

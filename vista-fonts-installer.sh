@@ -2,7 +2,9 @@
 set -e # Exit with nonzero exit code if anything fails
 
 readonly __progname=macos-vista-fonts-installer
-readonly PPV_PATH=https://web.archive.org/web/20171225132744/http://download.microsoft.com/download/E/6/7/E675FFFC-2A6D-4AB0-B3EB-27C9F8C8F696/PowerPointViewer.exe
+readonly PPV_PATH_1=https://web.archive.org/web/20171225132744/http://download.microsoft.com/download/E/6/7/E675FFFC-2A6D-4AB0-B3EB-27C9F8C8F696/PowerPointViewer.exe
+PPV_PATH_2=https://www.dropbox.com/s/dl/6lclhxpydwgkjzh/PowerPointViewer.exe?dl=1
+PPV_PATH=${PPV_PATH:-$PPV_PATH_1}
 
 CONVERT_TTF=${CONVERT_TTF:-}
 
@@ -285,8 +287,9 @@ main() {
   file=$(basename ${PPV_PATH})
 
   echo -e "\n:: Downloading ${file} from ${PPV_PATH}..."
-  curl -L ${PPV_PATH} -o ${file} || \
-    errx "\nDownload failed.\n"
+  curl --connect-timeout 5 -L ${PPV_PATH} -o ${file} || \
+    curl --connect-timeout 5 -L ${PPV_PATH_2} -o ${file} || \
+      errx "\nDownload failed.\n"
 
   echo -e "Download Done!\n"
 

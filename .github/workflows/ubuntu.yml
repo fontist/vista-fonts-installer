@@ -37,7 +37,6 @@ jobs:
             else
               echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
             fi
-            popd
           done < "$testfile"
           popd
           if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
@@ -81,7 +80,6 @@ jobs:
             else
               echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
             fi
-            popd
           done < "$testfile"
           popd
           if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then

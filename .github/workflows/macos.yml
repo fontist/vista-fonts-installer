@@ -22,9 +22,8 @@ jobs:
           ./vista-fonts-installer.sh
 
       - name: Test if directory is created with desired fonts
-        env:
-          MS_FONT_PATH: ~/Library/Fonts/Microsoft
         run: |
+          export MS_FONT_PATH="~/Library/Fonts/Microsoft"
           testfile=$(pwd)/tests/expected-files-macos-raw.txt
           resultfile=$(pwd)/result.txt
           echo -n "" > ${resultfile}
@@ -58,14 +57,13 @@ jobs:
       - name: Run script
         env:
           CONVERT_TTF: true
-          MS_FONT_PATH: ~/Library/Fonts/MS
         run: |
+          export MS_FONT_PATH="~/Library/Fonts/MS"
           ./vista-fonts-installer.sh
 
       - name: Test if directory is created with desired fonts
-        env:
-          MS_FONT_PATH: ~/Library/Fonts/MS
         run: |
+          export MS_FONT_PATH="~/Library/Fonts/MS"
           testfile=$(pwd)/tests/expected-files-macos-converted.txt
           resultfile=$(pwd)/result.txt
           echo -n "" > ${resultfile}

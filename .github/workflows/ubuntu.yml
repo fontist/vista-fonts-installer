@@ -25,22 +25,27 @@ jobs:
         env:
           MS_FONT_PATH: /usr/share/fonts/truetype/vista
         run: |
-          testfile=tests/expected-files-ubuntu-raw.txt
-          echo -n "" > result.txt
+          testfile=$(pwd)/tests/expected-files-macos-raw.txt
+          resultfile=$(pwd)/result.txt
+          echo -n "" > ${resultfile}
+          pushd "$MS_FONT_PATH"
           while IFS= read -r line
           do
             echo "$line"
-            if [ -f "$MS_FONT_PATH/$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PASS" >> result.txt
+            if [ -f "$line" ]; then
+              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
             else
-              echo "$MS_FONT_PATH/$line @ FAIL" >> result.txt
+              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
             fi
+            popd
           done < "$testfile"
-          if [ "0" == "$(grep -v FAIL result.txt | wc -l | tr -d ' ')" ]; then
+          popd
+          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
             echo "At least one font file not being installed, see output:"
-            cat result.txt
+            cat ${resultfile}
             exit 1
           fi
+
 
 
   build_with_convert:
@@ -64,19 +69,23 @@ jobs:
         env:
           MS_FONT_PATH: fonts
         run: |
-          testfile=tests/expected-files-ubuntu-converted.txt
-          echo -n "" > result.txt
+          testfile=$(pwd)/tests/expected-files-ubuntu-converted.txt
+          resultfile=$(pwd)/result.txt
+          echo -n "" > ${resultfile}
+          pushd "$MS_FONT_PATH"
           while IFS= read -r line
           do
             echo "$line"
-            if [ -f "$MS_FONT_PATH/$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PASS" >> result.txt
+            if [ -f "$line" ]; then
+              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
             else
-              echo "$MS_FONT_PATH/$line @ FAIL" >> result.txt
+              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
             fi
+            popd
           done < "$testfile"
-          if [ "0" == "$(grep -v FAIL result.txt | wc -l | tr -d ' ')" ]; then
+          popd
+          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
             echo "At least one font file not being installed, see output:"
-            cat result.txt
+            cat ${resultfile}
             exit 1
           fi

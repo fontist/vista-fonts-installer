@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build_without_convert:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@master
@@ -21,6 +21,59 @@ jobs:
         run: |
           ./vista-fonts-installer.sh
 
-      # - name: Test if directory is created with desired fonts
-      #   run: |
-      #     TODO ...
+      - name: Test if directory is created with desired fonts
+        run: |
+          testfile=tests/expected-files-macos-raw.txt
+          export INSTALLED_PATH=~/Library/Fonts/Microsoft
+          echo -n "" > result.txt
+          while IFS= read -r line
+          do
+            echo "$line"
+            if [ -f "$INSTALLED_PATH/$line" ]; then
+              echo "$INSTALLED_PATH/$line @ PASS" >> result.txt
+            else
+              echo "$INSTALLED_PATH/$line @ FAIL" >> result.txt
+            fi
+          done < "$testfile"
+          if [ "0" == "$(grep -v FAIL result.txt | wc -l | tr -d ' ')" ]; then
+            echo "At least one font file not being installed, see output:"
+            cat result.txt
+            exit 1
+          fi
+
+  build_with_convert:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install brew packages
+        run: |
+          brew install cabextract
+          brew install fontforge
+
+      - name: Run script
+        env:
+          CONVERT_TTF: true
+          MS_FONT_PATH: ~/Library/Fonts/MS
+        run: |
+          ./vista-fonts-installer.sh
+
+      - name: Test if directory is created with desired fonts
+        run: |
+          testfile=tests/expected-files-macos-converted.txt
+          export INSTALLED_PATH=~/Library/Fonts/MS
+          echo -n "" > result.txt
+          while IFS= read -r line
+          do
+            echo "$line"
+            if [ -f "$INSTALLED_PATH/$line" ]; then
+              echo "$INSTALLED_PATH/$line @ PASS" >> result.txt
+            else
+              echo "$INSTALLED_PATH/$line @ FAIL" >> result.txt
+            fi
+          done < "$testfile"
+          if [ "0" == "$(grep -v FAIL result.txt | wc -l | tr -d ' ')" ]; then
+            echo "At least one font file not being installed, see output:"
+            cat result.txt
+            exit 1
+          fi

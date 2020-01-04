@@ -22,17 +22,18 @@ jobs:
           ./vista-fonts-installer.sh
 
       - name: Test if directory is created with desired fonts
+        env:
+          MS_FONT_PATH: ~/Library/Fonts/Microsoft
         run: |
           testfile=tests/expected-files-macos-raw.txt
-          export INSTALLED_PATH=~/Library/Fonts/Microsoft
           echo -n "" > result.txt
           while IFS= read -r line
           do
             echo "$line"
-            if [ -f "$INSTALLED_PATH/$line" ]; then
-              echo "$INSTALLED_PATH/$line @ PASS" >> result.txt
+            if [ -f "$MS_FONT_PATH/$line" ]; then
+              echo "$MS_FONT_PATH/$line @ PASS" >> result.txt
             else
-              echo "$INSTALLED_PATH/$line @ FAIL" >> result.txt
+              echo "$MS_FONT_PATH/$line @ FAIL" >> result.txt
             fi
           done < "$testfile"
           if [ "0" == "$(grep -v FAIL result.txt | wc -l | tr -d ' ')" ]; then
@@ -59,17 +60,19 @@ jobs:
           ./vista-fonts-installer.sh
 
       - name: Test if directory is created with desired fonts
+        env:
+          MS_FONT_PATH: ~/Library/Fonts/MS
         run: |
           testfile=tests/expected-files-macos-converted.txt
-          export INSTALLED_PATH=~/Library/Fonts/MS
+          ls -al $MS_FONT_PATH
           echo -n "" > result.txt
           while IFS= read -r line
           do
             echo "$line"
-            if [ -f "$INSTALLED_PATH/$line" ]; then
-              echo "$INSTALLED_PATH/$line @ PASS" >> result.txt
+            if [ -f "$MS_FONT_PATH/$line" ]; then
+              echo "$MS_FONT_PATH/$line @ PASS" >> result.txt
             else
-              echo "$INSTALLED_PATH/$line @ FAIL" >> result.txt
+              echo "$MS_FONT_PATH/$line @ FAIL" >> result.txt
             fi
           done < "$testfile"
           if [ "0" == "$(grep -v FAIL result.txt | wc -l | tr -d ' ')" ]; then

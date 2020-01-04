@@ -22,17 +22,18 @@ jobs:
           ./vista-fonts-installer.sh
 
       - name: Test if directory is created with desired fonts
+        env:
+          MS_FONT_PATH: /usr/share/fonts/truetype/vista
         run: |
           testfile=tests/expected-files-ubuntu-raw.txt
-          export INSTALLED_PATH=/usr/share/fonts/truetype/vista
           echo -n "" > result.txt
           while IFS= read -r line
           do
             echo "$line"
-            if [ -f "$INSTALLED_PATH/$line" ]; then
-              echo "$INSTALLED_PATH/$line @ PASS" >> result.txt
+            if [ -f "$MS_FONT_PATH/$line" ]; then
+              echo "$MS_FONT_PATH/$line @ PASS" >> result.txt
             else
-              echo "$INSTALLED_PATH/$line @ FAIL" >> result.txt
+              echo "$MS_FONT_PATH/$line @ FAIL" >> result.txt
             fi
           done < "$testfile"
           if [ "0" == "$(grep -v FAIL result.txt | wc -l | tr -d ' ')" ]; then
@@ -60,17 +61,18 @@ jobs:
           ./vista-fonts-installer.sh
 
       - name: Test if directory is created with desired fonts
+        env:
+          MS_FONT_PATH: fonts
         run: |
           testfile=tests/expected-files-ubuntu-converted.txt
-          export INSTALLED_PATH=fonts
           echo -n "" > result.txt
           while IFS= read -r line
           do
             echo "$line"
-            if [ -f "$INSTALLED_PATH/$line" ]; then
-              echo "$INSTALLED_PATH/$line @ PASS" >> result.txt
+            if [ -f "$MS_FONT_PATH/$line" ]; then
+              echo "$MS_FONT_PATH/$line @ PASS" >> result.txt
             else
-              echo "$INSTALLED_PATH/$line @ FAIL" >> result.txt
+              echo "$MS_FONT_PATH/$line @ FAIL" >> result.txt
             fi
           done < "$testfile"
           if [ "0" == "$(grep -v FAIL result.txt | wc -l | tr -d ' ')" ]; then

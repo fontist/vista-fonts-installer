@@ -26,10 +26,10 @@ jobs:
         env:
           MS_FONT_PATH: /usr/share/fonts/truetype/vista
         run: |
-          testfile=$(pwd)/tests/expected-files-macos-raw.txt
+          testfile=$(pwd)/tests/expected-files-debian-raw.txt
           resultfile=$(pwd)/result.txt
           echo -n "" > ${resultfile}
-          pushd "$MS_FONT_PATH"
+          cd "$MS_FONT_PATH"
           while IFS= read -r line
           do
             echo "$line"
@@ -39,7 +39,7 @@ jobs:
               echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
             fi
           done < "$testfile"
-          popd
+          cd $(basename $resultfile)
           if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
             echo "At least one font file not being installed, see output:"
             cat ${resultfile}
@@ -73,7 +73,7 @@ jobs:
           testfile=$(pwd)/tests/expected-files-debian-converted.txt
           resultfile=$(pwd)/result.txt
           echo -n "" > ${resultfile}
-          pushd "$MS_FONT_PATH"
+          cd "$MS_FONT_PATH"
           while IFS= read -r line
           do
             echo "$line"
@@ -83,7 +83,7 @@ jobs:
               echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
             fi
           done < "$testfile"
-          popd
+          cd $(basename $resultfile)
           if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
             echo "At least one font file not being installed, see output:"
             cat ${resultfile}

@@ -39,7 +39,7 @@ jobs:
               echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
             fi
           done < "$testfile"
-          cd $(basename $resultfile)
+          cd $(dirname $resultfile)
           if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
             echo "At least one font file not being installed, see output:"
             cat ${resultfile}
@@ -83,7 +83,7 @@ jobs:
               echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
             fi
           done < "$testfile"
-          cd $(basename $resultfile)
+          cd $(dirname $resultfile)
           if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
             echo "At least one font file not being installed, see output:"
             cat ${resultfile}

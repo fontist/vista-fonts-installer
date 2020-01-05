@@ -8,6 +8,7 @@ on:
 
 jobs:
   build_without_convert:
+    runs-on: ubuntu-latest
     container: debian
     steps:
       - uses: actions/checkout@master
@@ -48,6 +49,7 @@ jobs:
 
 
   build_with_convert:
+    runs-on: ubuntu-latest
     container: debian
     steps:
       - uses: actions/checkout@master

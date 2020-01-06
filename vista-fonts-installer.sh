@@ -216,12 +216,18 @@ main() {
   if [ "${platform}" == "macos" ]; then
     echo "Detected platform: macOS" >&2
   elif [ "${platform}" == "linux" ]; then
-    if [ "$(get_linux_dist)" == "ubuntu" ]; then
-      echo "Detected platform: ubuntu" >&2
-      platform="ubuntu"
-    else
+    for plat in ubuntu debian; do
+      if [ "$(get_linux_dist)" == "${plat}" ]; then
+        echo "Detected platform: ${plat}" >&2
+        platform="${plat}"
+        break
+      fi
+    done
+
+    if [ "${platform}" == "linux" ]; then
       errx "Linux distribution $(get_linux_dist) is not supported. Please contribute a fix!"
     fi
+
   else
     errx "platform ${platform} is not supported. Please contribute a fix!"
   fi
@@ -237,12 +243,13 @@ main() {
     case ${platform} in
       macos*) MS_FONT_PATH="$HOME/Library/Fonts/Microsoft" ;;
       ubuntu*) MS_FONT_PATH="/usr/share/fonts/truetype/vista" ;;
-      # *) ...; exit 1 ;;
+      debian*) MS_FONT_PATH="/usr/share/fonts/truetype/vista" ;;
+      *) exit 1 ;;
     esac
   fi
 
   [[ -d ${MS_FONT_PATH} ]] || \
-    mkdir -p ${MS_FONT_PATH} || \
+    mkdir -p "${MS_FONT_PATH}" || \
       errx "Unable to write to ${MS_FONT_PATH}."
 
   # Take the absolute path

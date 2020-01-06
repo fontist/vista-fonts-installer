@@ -1,0 +1,91 @@
+name: debian
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build_without_convert:
+    runs-on: ubuntu-latest
+    container: debian
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install prerequisite packages
+        run: |
+          apt-get update
+          apt-get install -y curl cabextract fontforge
+
+      - name: Run script
+        run: |
+          ./vista-fonts-installer.sh
+
+      - name: Test if directory is created with desired fonts
+        env:
+          MS_FONT_PATH: /usr/share/fonts/truetype/vista
+        run: |
+          testfile=$(pwd)/tests/expected-files-debian-raw.txt
+          resultfile=$(pwd)/result.txt
+          echo -n "" > ${resultfile}
+          cd "$MS_FONT_PATH"
+          while IFS= read -r line
+          do
+            echo "$line"
+            if [ -f "$line" ]; then
+              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
+            else
+              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
+            fi
+          done < "$testfile"
+          cd $(dirname $resultfile)
+          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
+            echo "At least one font file not being installed, see output:"
+            cat ${resultfile}
+            exit 1
+          fi
+
+
+
+  build_with_convert:
+    runs-on: ubuntu-latest
+    container: debian
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install prerequisite packages
+        run: |
+          apt-get update
+          apt-get install -y curl cabextract fontforge
+
+      - name: Run script
+        env:
+          CONVERT_TTF: true
+          MS_FONT_PATH: fonts
+        run: |
+          ./vista-fonts-installer.sh
+
+      - name: Test if directory is created with desired fonts
+        env:
+          MS_FONT_PATH: fonts
+        run: |
+          testfile=$(pwd)/tests/expected-files-debian-converted.txt
+          resultfile=$(pwd)/result.txt
+          echo -n "" > ${resultfile}
+          cd "$MS_FONT_PATH"
+          while IFS= read -r line
+          do
+            echo "$line"
+            if [ -f "$line" ]; then
+              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
+            else
+              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
+            fi
+          done < "$testfile"
+          cd $(dirname $resultfile)
+          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
+            echo "At least one font file not being installed, see output:"
+            cat ${resultfile}
+            exit 1
+          fi

@@ -216,7 +216,7 @@ main() {
   if [ "${platform}" == "macos" ]; then
     echo "Detected platform: macOS" >&2
   elif [ "${platform}" == "linux" ]; then
-    for plat in ubuntu debian mint; do
+    for plat in ubuntu debian linuxmint; do
       if [ "$(get_linux_dist)" == "${plat}" ]; then
         echo "Detected platform: ${plat}" >&2
         platform="${plat}"
@@ -244,7 +244,7 @@ main() {
       macos*) MS_FONT_PATH="$HOME/Library/Fonts/Microsoft" ;;
       ubuntu*) MS_FONT_PATH="/usr/share/fonts/truetype/vista" ;;
       debian*) MS_FONT_PATH="/usr/share/fonts/truetype/vista" ;;
-      mint*) MS_FONT_PATH="/usr/share/fonts/truetype/vista" ;;
+      linuxmint*) MS_FONT_PATH="/usr/share/fonts/truetype/vista" ;;
       *) exit 1 ;;
     esac
   fi

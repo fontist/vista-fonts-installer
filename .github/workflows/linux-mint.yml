@@ -9,7 +9,7 @@ on:
 jobs:
   build_without_convert:
     runs-on: ubuntu-latest
-    container: vcatechnology/docker-linux-mint
+    container: vcatechnology/linux-mint
     steps:
       - uses: actions/checkout@master
 
@@ -48,7 +48,7 @@ jobs:
 
   build_with_convert:
     runs-on: ubuntu-latest
-    container: vcatechnology/docker-linux-mint
+    container: vcatechnology/linux-mint
     steps:
       - uses: actions/checkout@master
 

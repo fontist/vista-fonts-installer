@@ -10,7 +10,8 @@ jobs:
   build_without_convert:
     runs-on: ubuntu-latest
     container: docker-linux-mint
-    - uses: actions/checkout@master
+    steps:
+      - uses: actions/checkout@master
 
       - name: Install prerequisite packages
         run: |

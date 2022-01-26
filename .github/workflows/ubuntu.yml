@@ -25,25 +25,7 @@ jobs:
         env:
           MS_FONT_PATH: /usr/share/fonts/truetype/vista
         run: |
-          testfile=$(pwd)/tests/expected-files-macos-raw.txt
-          resultfile=$(pwd)/result.txt
-          echo -n "" > ${resultfile}
-          pushd "$MS_FONT_PATH"
-          while IFS= read -r line
-          do
-            echo "$line"
-            if [ -f "$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
-            else
-              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
-            fi
-          done < "$testfile"
-          popd
-          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
-            echo "At least one font file not being installed, see output:"
-            cat ${resultfile}
-            exit 1
-          fi
+          ./tests/test_directory.sh "tests/expected-files-ubuntu-raw.txt" "result.txt"
 
   build_with_convert:
     runs-on: ubuntu-latest
@@ -67,25 +49,7 @@ jobs:
         env:
           MS_FONT_PATH: fonts
         run: |
-          testfile=$(pwd)/tests/expected-files-ubuntu-converted.txt
-          resultfile=$(pwd)/result.txt
-          echo -n "" > ${resultfile}
-          pushd "$MS_FONT_PATH"
-          while IFS= read -r line
-          do
-            echo "$line"
-            if [ -f "$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
-            else
-              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
-            fi
-          done < "$testfile"
-          popd
-          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
-            echo "At least one font file not being installed, see output:"
-            cat ${resultfile}
-            exit 1
-          fi
+          ./tests/test_directory.sh "tests/expected-files-ubuntu-converted.txt" "result.txt"
 
   build_and_except_eula_manually:
     runs-on: ubuntu-latest
@@ -105,25 +69,7 @@ jobs:
         env:
           MS_FONT_PATH: /usr/share/fonts/truetype/vista
         run: |
-          testfile=$(pwd)/tests/expected-files-macos-raw.txt
-          resultfile=$(pwd)/result.txt
-          echo -n "" > ${resultfile}
-          pushd "$MS_FONT_PATH"
-          while IFS= read -r line
-          do
-            echo "$line"
-            if [ -f "$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
-            else
-              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
-            fi
-          done < "$testfile"
-          popd
-          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
-            echo "At least one font file not being installed, see output:"
-            cat ${resultfile}
-            exit 1
-          fi
+          ./tests/test_directory.sh "tests/expected-files-ubuntu-raw.txt" "result.txt"
 
   build_and_reject_eula_manually:
     runs-on: ubuntu-latest
@@ -143,22 +89,4 @@ jobs:
         env:
           MS_FONT_PATH: /usr/share/fonts/truetype/vista
         run: |
-          testfile=$(pwd)/tests/expected-files-macos-raw.txt
-          resultfile=$(pwd)/result.txt
-          echo -n "" > ${resultfile}
-          pushd "$MS_FONT_PATH"
-          while IFS= read -r line
-          do
-            echo "$line"
-            if [ -f "$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
-            else
-              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
-            fi
-          done < "$testfile"
-          popd
-          if [ "0" == "$(grep -v PRESENT ${resultfile} | wc -l | tr -d ' ')" ]; then
-            echo "Fonts are installed even when EULA is rejected."
-            cat ${resultfile}
-            exit 1
-          fi
+          ./tests/test_directory.sh "tests/expected-files-ubuntu-raw.txt" "result.txt" "check_present"

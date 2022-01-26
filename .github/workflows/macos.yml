@@ -22,27 +22,10 @@ jobs:
           ./vista-fonts-installer.sh --accept-microsoft-eula
 
       - name: Test if directory is created with desired fonts
+        env:
+          MS_FONT_PATH=~/Library/Fonts/Microsoft
         run: |
-          export MS_FONT_PATH=~/Library/Fonts/Microsoft
-          testfile=$(pwd)/tests/expected-files-macos-raw.txt
-          resultfile=$(pwd)/result.txt
-          echo -n "" > ${resultfile}
-          pushd "$MS_FONT_PATH"
-          while IFS= read -r line
-          do
-            echo "$line"
-            if [ -f "$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
-            else
-              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
-            fi
-          done < "$testfile"
-          popd
-          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
-            echo "At least one font file not being installed, see output:"
-            cat ${resultfile}
-            exit 1
-          fi
+          ./tests/test_directory.sh "tests/expected-files-macos-raw.txt" "result.txt"
 
   build_with_convert:
     runs-on: macos-latest
@@ -63,27 +46,10 @@ jobs:
           ./vista-fonts-installer.sh
 
       - name: Test if directory is created with desired fonts
+        env:
+          MS_FONT_PATH=~/Library/Fonts/MS
         run: |
-          export MS_FONT_PATH=~/Library/Fonts/MS
-          testfile=$(pwd)/tests/expected-files-macos-converted.txt
-          resultfile=$(pwd)/result.txt
-          echo -n "" > ${resultfile}
-          pushd "$MS_FONT_PATH"
-          while IFS= read -r line
-          do
-            echo "$line"
-            if [ -f "$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
-            else
-              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
-            fi
-          done < "$testfile"
-          popd
-          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
-            echo "At least one font file not being installed, see output:"
-            cat ${resultfile}
-            exit 1
-          fi
+          ./tests/test_directory.sh "tests/expected-files-macos-converted.txt" "result.txt"
 
   build_and_except_eula_manually:
     runs-on: macos-latest
@@ -100,27 +66,10 @@ jobs:
           yes "yes" | ./vista-fonts-installer.sh
 
       - name: Test if directory is created with desired fonts
+        env:
+          MS_FONT_PATH=~/Library/Fonts/Microsoft
         run: |
-          export MS_FONT_PATH=~/Library/Fonts/Microsoft
-          testfile=$(pwd)/tests/expected-files-macos-raw.txt
-          resultfile=$(pwd)/result.txt
-          echo -n "" > ${resultfile}
-          pushd "$MS_FONT_PATH"
-          while IFS= read -r line
-          do
-            echo "$line"
-            if [ -f "$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
-            else
-              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
-            fi
-          done < "$testfile"
-          popd
-          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
-            echo "At least one font file not being installed, see output:"
-            cat ${resultfile}
-            exit 1
-          fi
+          ./tests/test_directory.sh "tests/expected-files-macos-raw.txt" "result.txt"
 
   build_and_reject_eula_manually:
     runs-on: macos-latest
@@ -137,24 +86,7 @@ jobs:
           yes "no" | ./vista-fonts-installer.sh
 
       - name: Test if directory is created with desired fonts
+        env:
+          MS_FONT_PATH=~/Library/Fonts/Microsoft
         run: |
-          export MS_FONT_PATH=~/Library/Fonts/Microsoft
-          testfile=$(pwd)/tests/expected-files-macos-raw.txt
-          resultfile=$(pwd)/result.txt
-          echo -n "" > ${resultfile}
-          pushd "$MS_FONT_PATH"
-          while IFS= read -r line
-          do
-            echo "$line"
-            if [ -f "$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
-            else
-              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
-            fi
-          done < "$testfile"
-          popd
-          if [ "0" == "$(grep -v PRESENT ${resultfile} | wc -l | tr -d ' ')" ]; then
-            echo "Fonts are installed even when EULA is rejected."
-            cat ${resultfile}
-            exit 1
-          fi
+          ./tests/test_directory.sh "tests/expected-files-macos-raw.txt" "result.txt" "check_present"

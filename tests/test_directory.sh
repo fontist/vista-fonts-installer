@@ -42,4 +42,4 @@ test_files() {
   fi
 }
 
-test_files_created $@
+test_files $@

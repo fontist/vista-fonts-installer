@@ -35,7 +35,7 @@ test_files() {
   done < "$testfile"
   cd $(dirname $resultfile)
 
-  if [ "${$3}" == "check_present" ]; then
+  if [ $3 == "check_present" ]; then
     test_files_present "Files should not be installed when not accepting EULA."
   else
     test_files_missing "At least one font file not being installed, see output:"

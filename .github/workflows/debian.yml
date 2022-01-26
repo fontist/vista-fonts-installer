@@ -59,10 +59,10 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: Install brew packages
+      - name: Install prerequisite packages
         run: |
-          brew install cabextract
-          brew install fontforge
+          apt-get update
+          apt-get install -y curl cabextract fontforge
 
       - name: Run script
         run: |
@@ -80,10 +80,10 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: Install brew packages
+      - name: Install prerequisite packages
         run: |
-          brew install cabextract
-          brew install fontforge
+          apt-get update
+          apt-get install -y curl cabextract fontforge
 
       - name: Run script
         run: |

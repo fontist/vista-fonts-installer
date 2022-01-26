@@ -20,7 +20,7 @@ jobs:
 
       - name: Run script
         run: |
-          ./vista-fonts-installer.sh
+          ./vista-fonts-installer.sh --accept-microsoft-eula
 
       - name: Test if directory is created with desired fonts
         env:
@@ -46,8 +46,6 @@ jobs:
             exit 1
           fi
 
-
-
   build_with_convert:
     runs-on: ubuntu-latest
     container: debian
@@ -63,6 +61,7 @@ jobs:
         env:
           CONVERT_TTF: true
           MS_FONT_PATH: fonts
+          ACCEPT_EULA: true
         run: |
           ./vista-fonts-installer.sh
 
@@ -86,6 +85,84 @@ jobs:
           cd $(dirname $resultfile)
           if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
             echo "At least one font file not being installed, see output:"
+            cat ${resultfile}
+            exit 1
+          fi
+
+  build_and_except_eula_manually:
+    runs-on: ubuntu-latest
+    container: debian
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install brew packages
+        run: |
+          brew install cabextract
+          brew install fontforge
+
+      - name: Run script
+        run: |
+          yes "yes" | ./vista-fonts-installer.sh
+
+      - name: Test if directory is created with desired fonts
+        env:
+          MS_FONT_PATH: /usr/share/fonts/truetype/vista
+        run: |
+          testfile=$(pwd)/tests/expected-files-macos-raw.txt
+          resultfile=$(pwd)/result.txt
+          echo -n "" > ${resultfile}
+          pushd "$MS_FONT_PATH"
+          while IFS= read -r line
+          do
+            echo "$line"
+            if [ -f "$line" ]; then
+              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
+            else
+              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
+            fi
+          done < "$testfile"
+          popd
+          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
+            echo "At least one font file not being installed, see output:"
+            cat ${resultfile}
+            exit 1
+          fi
+
+  build_and_reject_eula_manually:
+    runs-on: ubuntu-latest
+    container: debian
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install brew packages
+        run: |
+          brew install cabextract
+          brew install fontforge
+
+      - name: Run script
+        run: |
+          yes "no" | ./vista-fonts-installer.sh
+
+      - name: Test if directory is created with desired fonts
+        env:
+          MS_FONT_PATH: /usr/share/fonts/truetype/vista
+        run: |
+          testfile=$(pwd)/tests/expected-files-macos-raw.txt
+          resultfile=$(pwd)/result.txt
+          echo -n "" > ${resultfile}
+          pushd "$MS_FONT_PATH"
+          while IFS= read -r line
+          do
+            echo "$line"
+            if [ -f "$line" ]; then
+              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
+            else
+              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
+            fi
+          done < "$testfile"
+          popd
+          if [ "0" == "$(grep -v PRESENT ${resultfile} | wc -l | tr -d ' ')" ]; then
+            echo "Fonts are installed even when EULA is rejected."
             cat ${resultfile}
             exit 1
           fi

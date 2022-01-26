@@ -232,7 +232,6 @@ main() {
     errx "platform ${platform} is not supported. Please contribute a fix!"
   fi
 
-
   RENAME_FONTS=${RENAME_FONTS:-}
   if [ "${RENAME_FONTS}" == "" ] && [ "${platform}" == "macos" ]; then
     RENAME_FONTS="true"
@@ -323,6 +322,27 @@ main() {
 
   cabextract -L -F '*.tt?' ppviewer.cab || \
     errx "Can't extract '*.tt?' from 'ppviewer.cab'. Corrupted download?"
+
+  ACCEPT_EULA=${ACCEPT_EULA:-}
+  if [ $1 == "--accept-microsoft-eula" ]; then
+    ACCEPT_EULA="true"
+  fi
+
+  if [ ${ACCEPT_EULA} != "true" ]; then
+    cabextract -L -F 'EULA' "$file" || \
+      errx "Can't extract EULA from '$file'. Corrupted download?"
+
+    cat "eula"
+
+    echo -n "Do you accept EULA? (yes/no): "
+    read input
+
+    if [ "${input}" != "yes" ]; then
+      errx "Unable to install some fonts. EULA not accepted"
+    fi
+  fi
+
+  echo -n ":: Accepted the End User Lisence Agreement (EULA)... " >&2
 
   echo -n ":: Installing... " >&2
 

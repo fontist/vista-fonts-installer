@@ -329,7 +329,7 @@ main() {
   cabextract -L -F '*.tt?' ppviewer.cab || \
     errx "Can't extract '*.tt?' from 'ppviewer.cab'. Corrupted download?"
 
-  if [ ${ACCEPT_EULA} != "true" ]; then
+  if [ "${ACCEPT_EULA}" != "true" ]; then
     cabextract -L -F 'EULA' "$file" || \
       errx "Can't extract EULA from '$file'. Corrupted download?"
 

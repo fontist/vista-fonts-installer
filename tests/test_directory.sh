@@ -21,7 +21,7 @@ test_files_present() {
   fi
 }
 
-test_files() {
+prepare_test_data() {
   echo -n "" > ${resultfile}
   cd "$MS_FONT_PATH"
   while IFS= read -r line
@@ -34,13 +34,17 @@ test_files() {
     fi
   done < "$testfile"
   cd $(dirname $resultfile)
+}
 
+test_files() {
   if [[ $3 == "accept_eula_by_parameter" ]]; then
     "$(./vista-fonts-installer.sh --accept-microsoft-eula)"
+    prepare_test_data
     test_files_missing "At least one font file not being installed, see output:"
 
   elif [[ $3 == "accept_eula_manually" ]]; then
     "$(yes "yes" | ./vista-fonts-installer.sh)"
+    prepare_test_data
     test_files_missing "At least one font file not being installed, see output:"
 
   elif [[ $3 == "reject_eula" ]]; then
@@ -49,10 +53,12 @@ test_files() {
     if [ "${exit_status}" == '0' ]; then
       exit 1
     fi
+    prepare_test_data
     test_files_present "Files should not be installed when not accepting EULA."
 
   else
     "$(./vista-fonts-installer.sh)"
+    prepare_test_data
     test_files_missing "At least one font file not being installed, see output:"
   fi
 }

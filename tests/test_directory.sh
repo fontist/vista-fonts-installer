@@ -1,6 +1,6 @@
 #!/bin/bash
 
-testfile="$./$1"
+testfile="$1"
 resultfile="$(pwd)/result.txt"
 
 MS_FONT_PATH=${MS_FONT_PATH:-}

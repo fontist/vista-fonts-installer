@@ -97,6 +97,7 @@ The following environment variables are available to configure installation beha
 `CONVERT_TTF`:: Set to `true` to expand all TTC files into TTF files (e.g. `export CONVERT_TTF=true`). This is by default `false`.
 `RENAME_FONTS`:: Set to `true` to rename TTC/TTF files into their font name (e.g. `cambriai.ttf` will become `Cambria Italic.ttf`). For macOS this is by default `true`. Set to `false` to disable.
 `MS_FONT_PATH`:: Set to your desired installation path. On macOS it is by default set to `~/Library/Fonts/Microsoft`.
+`ACCEPT_EULA`:: Set to `true` to accept Microsoft EULA automatically.
 
 e.g.
 
@@ -105,6 +106,7 @@ e.g.
 export CONVERT_TTF=true
 export RENAME_FONTS=true
 export MS_FONT_PATH=/Library/Fonts/Microsoft # this is where MS Office installs to
+export ACCEPT_EULA=true
 curl -Ls https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
 ----
 
@@ -115,8 +117,10 @@ You can also run this to set the installation path:
 ----
 curl -Ls -o vista-fonts-installer.sh https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh
 chmod +x vista-fonts-installer.sh
-./vistra-fonts-installer.sh [desired-path]
+./vistra-fonts-installer.sh --accept-microsoft-eula [desired-path]
 ----
+
+`--accept-microsoft-eula`:: will automatically accept the EULA if this flag is passed.
 
 
 The installed fonts in macOS will have these names:
@@ -190,6 +194,7 @@ The following environment variables are available to configure installation beha
 `CONVERT_TTF`:: Set to `true` to expand all TTC files into TTF files (e.g. `export CONVERT_TTF=true`). This is by default `false`.
 `RENAME_FONTS`:: Set to `true` to rename TTC/TTF files into their font name (e.g. `cambriai.ttf` will become `Cambria Italic.ttf`). For Ubuntu this is by default `false`. Set to `true` to enable.
 `MS_FONT_PATH`:: Set to your desired installation path. On Ubuntu it is by default set to `/usr/share/fonts/truetype/vista`.
+`ACCEPT_EULA`:: Set to `true` to accept Microsoft EULA automatically.
 
 e.g.
 
@@ -197,6 +202,7 @@ e.g.
 ----
 export CONVERT_TTF=true
 export MS_FONT_PATH=~/fonts/truetype/vista
+export ACCEPT_EULA=true
 curl -Ls https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh | bash
 ----
 
@@ -205,9 +211,10 @@ Alternatively, you can run:
 ----
 curl -Ls -o vista-fonts-installer.sh https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh
 chmod +x vista-fonts-installer.sh
-./vistra-fonts-installer.sh [desired-path]
+./vistra-fonts-installer.sh --accept-microsoft-eula [desired-path]
 ----
 
+`--accept-microsoft-eula`:: will automatically accept the EULA if this flag is passed.
 
 The installed fonts in Ubuntu will have these names:
 

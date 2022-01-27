@@ -18,33 +18,11 @@ jobs:
           apt-get update
           apt-get install -y curl cabextract fontforge
 
-      - name: Run script
-        run: |
-          ./vista-fonts-installer.sh
-
-      - name: Test if directory is created with desired fonts
+      - name: Run test script
         env:
           MS_FONT_PATH: /usr/share/fonts/truetype/vista
         run: |
-          testfile=$(pwd)/tests/expected-files-mint-raw.txt
-          resultfile=$(pwd)/result.txt
-          echo -n "" > ${resultfile}
-          cd "$MS_FONT_PATH"
-          while IFS= read -r line
-          do
-            echo "$line"
-            if [ -f "$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
-            else
-              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
-            fi
-          done < "$testfile"
-          cd $(dirname $resultfile)
-          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
-            echo "At least one font file not being installed, see output:"
-            cat ${resultfile}
-            exit 1
-          fi
+          ./tests/test_directory.sh "tests/expected-files-mint-raw.txt" "accept_eula_by_parameter"
 
   build_with_convert:
     runs-on: ubuntu-latest
@@ -57,33 +35,44 @@ jobs:
           apt-get update
           apt-get install -y curl cabextract fontforge
 
-      - name: Run script
+      - name: Run test script
         env:
           CONVERT_TTF: true
           MS_FONT_PATH: fonts
+          ACCEPT_EULA: true
         run: |
-          ./vista-fonts-installer.sh
+          ./tests/test_directory.sh "tests/expected-files-mint-converted.txt"
 
-      - name: Test if directory is created with desired fonts
-        env:
-          MS_FONT_PATH: fonts
+  build_and_except_eula_manually:
+    runs-on: ubuntu-latest
+    container: vcatechnology/linux-mint
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install prerequisite packages
         run: |
-          testfile=$(pwd)/tests/expected-files-mint-converted.txt
-          resultfile=$(pwd)/result.txt
-          echo -n "" > ${resultfile}
-          cd "$MS_FONT_PATH"
-          while IFS= read -r line
-          do
-            echo "$line"
-            if [ -f "$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
-            else
-              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
-            fi
-          done < "$testfile"
-          cd $(dirname $resultfile)
-          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
-            echo "At least one font file not being installed, see output:"
-            cat ${resultfile}
-            exit 1
-          fi
+          apt-get update
+          apt-get install -y curl cabextract fontforge
+
+      - name: Run test script
+        env:
+          MS_FONT_PATH: /usr/share/fonts/truetype/vista
+        run: |
+          ./tests/test_directory.sh "tests/expected-files-mint-raw.txt" "accept_eula_manually"
+
+  build_and_reject_eula_manually:
+    runs-on: ubuntu-latest
+    container: vcatechnology/linux-mint
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install prerequisite packages
+        run: |
+          apt-get update
+          apt-get install -y curl cabextract fontforge
+
+      - name: Run test script
+        env:
+          MS_FONT_PATH: /usr/share/fonts/truetype/vista
+        run: |
+          ./tests/test_directory.sh "tests/expected-files-mint-raw.txt" "reject_eula"

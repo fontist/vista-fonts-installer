@@ -17,32 +17,11 @@ jobs:
           brew install cabextract
           brew install fontforge
 
-      - name: Run script
+      - name: Run test script
+        env:
+          MS_FONT_PATH: ~/Library/Fonts/Microsoft
         run: |
-          ./vista-fonts-installer.sh
-
-      - name: Test if directory is created with desired fonts
-        run: |
-          export MS_FONT_PATH=~/Library/Fonts/Microsoft
-          testfile=$(pwd)/tests/expected-files-macos-raw.txt
-          resultfile=$(pwd)/result.txt
-          echo -n "" > ${resultfile}
-          pushd "$MS_FONT_PATH"
-          while IFS= read -r line
-          do
-            echo "$line"
-            if [ -f "$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
-            else
-              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
-            fi
-          done < "$testfile"
-          popd
-          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
-            echo "At least one font file not being installed, see output:"
-            cat ${resultfile}
-            exit 1
-          fi
+          ./tests/test_directory.sh "tests/expected-files-macos-raw.txt" "accept_eula_by_parameter"
 
   build_with_convert:
     runs-on: macos-latest
@@ -54,32 +33,42 @@ jobs:
           brew install cabextract
           brew install fontforge
 
-      - name: Run script
+      - name: Run test script
         env:
           CONVERT_TTF: true
+          ACCEPT_EULA: true
+          MS_FONT_PATH: ~/Library/Fonts/MS
         run: |
-          export MS_FONT_PATH=~/Library/Fonts/MS
-          ./vista-fonts-installer.sh
+          ./tests/test_directory.sh "tests/expected-files-macos-converted.txt"
 
-      - name: Test if directory is created with desired fonts
+  build_and_except_eula_manually:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install brew packages
         run: |
-          export MS_FONT_PATH=~/Library/Fonts/MS
-          testfile=$(pwd)/tests/expected-files-macos-converted.txt
-          resultfile=$(pwd)/result.txt
-          echo -n "" > ${resultfile}
-          pushd "$MS_FONT_PATH"
-          while IFS= read -r line
-          do
-            echo "$line"
-            if [ -f "$line" ]; then
-              echo "$MS_FONT_PATH/$line @ PRESENT" >> ${resultfile}
-            else
-              echo "$MS_FONT_PATH/$line @ MISSING" >> ${resultfile}
-            fi
-          done < "$testfile"
-          popd
-          if [ "0" == "$(grep -v MISSING ${resultfile} | wc -l | tr -d ' ')" ]; then
-            echo "At least one font file not being installed, see output:"
-            cat ${resultfile}
-            exit 1
-          fi
+          brew install cabextract
+          brew install fontforge
+
+      - name: Run test script
+        env:
+          MS_FONT_PATH: ~/Library/Fonts/Microsoft
+        run: |
+          ./tests/test_directory.sh "tests/expected-files-macos-raw.txt" "accept_eula_manually"
+
+  build_and_reject_eula_manually:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install brew packages
+        run: |
+          brew install cabextract
+          brew install fontforge
+
+      - name: Run test script
+        env:
+          MS_FONT_PATH: ~/Library/Fonts/Microsoft
+        run: |
+          ./tests/test_directory.sh "tests/expected-files-macos-raw.txt" "reject_eula"

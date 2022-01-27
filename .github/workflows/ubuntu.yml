@@ -17,15 +17,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y curl cabextract fontforge
 
-      - name: Run script
-        run: |
-          ./vista-fonts-installer.sh --accept-microsoft-eula
-
-      - name: Test if directory is created with desired fonts
+      - name: Run test script
         env:
           MS_FONT_PATH: /usr/share/fonts/truetype/vista
         run: |
-          ./tests/test_directory.sh "tests/expected-files-ubuntu-raw.txt" "result.txt"
+          ./tests/test_directory.sh "tests/expected-files-ubuntu-raw.txt" "accept_eula_by_parameter"
 
   build_with_convert:
     runs-on: ubuntu-latest
@@ -37,19 +33,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y curl cabextract fontforge
 
-      - name: Run script
+      - name: Run test script
         env:
           CONVERT_TTF: true
           MS_FONT_PATH: fonts
           ACCEPT_EULA: true
         run: |
-          ./vista-fonts-installer.sh
-
-      - name: Test if directory is created with desired fonts
-        env:
-          MS_FONT_PATH: fonts
-        run: |
-          ./tests/test_directory.sh "tests/expected-files-ubuntu-converted.txt" "result.txt"
+          ./tests/test_directory.sh "tests/expected-files-ubuntu-converted.txt"
 
   build_and_except_eula_manually:
     runs-on: ubuntu-latest
@@ -61,15 +51,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y curl cabextract fontforge
 
-      - name: Run script
-        run: |
-          yes "yes" | ./vista-fonts-installer.sh
-
-      - name: Test if directory is created with desired fonts
+      - name: Run test script
         env:
           MS_FONT_PATH: /usr/share/fonts/truetype/vista
         run: |
-          ./tests/test_directory.sh "tests/expected-files-ubuntu-raw.txt" "result.txt"
+          ./tests/test_directory.sh "tests/expected-files-ubuntu-raw.txt" "accept_eula_manually"
 
   build_and_reject_eula_manually:
     runs-on: ubuntu-latest
@@ -81,12 +67,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y curl cabextract fontforge
 
-      - name: Run script
-        run: |
-          yes "no" | ./vista-fonts-installer.sh
-
       - name: Test if directory is created with desired fonts
         env:
           MS_FONT_PATH: /usr/share/fonts/truetype/vista
         run: |
-          ./tests/test_directory.sh "tests/expected-files-ubuntu-raw.txt" "result.txt" "check_present"
+          ./tests/test_directory.sh "tests/expected-files-ubuntu-raw.txt" "reject_eula"

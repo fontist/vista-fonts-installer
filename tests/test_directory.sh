@@ -36,15 +36,15 @@ test_files() {
   cd $(dirname $resultfile)
 
   if [[ $3 == "accept_eula_by_parameter" ]]; then
-    $(./vista-fonts-installer.sh --accept-microsoft-eula)
+    "$(./vista-fonts-installer.sh --accept-microsoft-eula)"
     test_files_missing "At least one font file not being installed, see output:"
 
   elif [[ $3 == "accept_eula_manually" ]]; then
-    $(yes "yes" | ./vista-fonts-installer.sh)
+    "$(yes "yes" | ./vista-fonts-installer.sh)"
     test_files_missing "At least one font file not being installed, see output:"
 
   elif [[ $3 == "reject_eula" ]]; then
-    $(yes "no" | ./vista-fonts-installer.sh)
+    "$(yes "no" | ./vista-fonts-installer.sh)"
     exit_status = $?
     if [ "${exit_status}" == '0' ]; then
       exit 1
@@ -52,7 +52,7 @@ test_files() {
     test_files_present "Files should not be installed when not accepting EULA."
 
   else
-    $(./vista-fonts-installer.sh)
+    "$(./vista-fonts-installer.sh)"
     test_files_missing "At least one font file not being installed, see output:"
   fi
 }

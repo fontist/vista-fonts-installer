@@ -75,5 +75,4 @@ jobs:
         env:
           MS_FONT_PATH: /usr/share/fonts/truetype/vista
         run: |
-          yes "no" | ./vista-fonts-installer.sh
           ./tests/test_directory.sh "tests/expected-files-debian-raw.txt" "reject_eula"

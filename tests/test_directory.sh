@@ -37,17 +37,17 @@ prepare_test_data() {
 }
 
 test_files() {
-  if [[ $3 == "accept_eula_by_parameter" ]]; then
+  if [[ $2 == "accept_eula_by_parameter" ]]; then
     "$(./vista-fonts-installer.sh --accept-microsoft-eula)"
     prepare_test_data
     test_files_missing "At least one font file not being installed, see output:"
 
-  elif [[ $3 == "accept_eula_manually" ]]; then
+  elif [[ $2 == "accept_eula_manually" ]]; then
     "$(yes "yes" | ./vista-fonts-installer.sh)"
     prepare_test_data
     test_files_missing "At least one font file not being installed, see output:"
 
-  elif [[ $3 == "reject_eula" ]]; then
+  elif [[ $2 == "reject_eula" ]]; then
     "$(yes "no" | ./vista-fonts-installer.sh)"
     exit_status = $?
     if [ "${exit_status}" == '0' ]; then

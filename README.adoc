@@ -117,7 +117,7 @@ You can also run this to set the installation path:
 ----
 curl -Ls -o vista-fonts-installer.sh https://raw.githubusercontent.com/metanorma/vista-fonts-installer/master/vista-fonts-installer.sh
 chmod +x vista-fonts-installer.sh
-./vistra-fonts-installer.sh --accept-microsoft-eula [desired-path]
+./vista-fonts-installer.sh --accept-microsoft-eula [desired-path]
 ----
 
 `--accept-microsoft-eula`:: will automatically accept the EULA if this flag is passed.

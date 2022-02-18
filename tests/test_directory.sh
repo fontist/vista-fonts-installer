@@ -43,12 +43,12 @@ test_files() {
     test_files_missing "At least one font file not being installed, see output:"
 
   elif [[ $2 == "accept_eula_manually" ]]; then
-    "$(yes "yes" | ./vista-fonts-installer.sh)"
+    "$(echo "yes" | ./vista-fonts-installer.sh)"
     prepare_test_data
     test_files_missing "At least one font file not being installed, see output:"
 
   elif [[ $2 == "reject_eula" ]]; then
-    "$(yes "no" | ./vista-fonts-installer.sh)"
+    "$(echo "no" | ./vista-fonts-installer.sh)"
     exit_status = $?
     if [ "${exit_status}" == '0' ]; then
       exit 1

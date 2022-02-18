@@ -10,7 +10,7 @@ PPV_SHA=249473568eba7a1e4f95498acba594e0f42e6581add4dead70c1dfb908a09423
 CONVERT_TTF=${CONVERT_TTF:-}
 
 ACCEPT_EULA=${ACCEPT_EULA:-}
-if [ $1 == "--accept-microsoft-eula" ]; then
+if [ "$1" == "--accept-microsoft-eula" ]; then
   ACCEPT_EULA="true"
   shift
 fi

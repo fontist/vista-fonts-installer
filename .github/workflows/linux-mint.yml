@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     container: vcatechnology/linux-mint
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
 
       - name: Install prerequisite packages
         run: |
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     container: vcatechnology/linux-mint
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
 
       - name: Install prerequisite packages
         run: |
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     container: vcatechnology/linux-mint
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
 
       - name: Install prerequisite packages
         run: |
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     container: vcatechnology/linux-mint
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
 
       - name: Install prerequisite packages
         run: |

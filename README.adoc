@@ -2,6 +2,8 @@
 
 image:https://github.com/metanorma/vista-fonts-installer/workflows/ubuntu/badge.svg["Build Status", link="https://github.com/metanorma/vista-fonts-installer/actions?workflow=ubuntu"]
 image:https://github.com/metanorma/vista-fonts-installer/workflows/macos/badge.svg["Build Status", link="https://github.com/metanorma/vista-fonts-installer/actions?workflow=macos"]
+image:https://github.com/metanorma/vista-fonts-installer/workflows/debian/badge.svg["Build Status", link="https://github.com/metanorma/vista-fonts-installer/actions?workflow=debian"]
+image:https://github.com/metanorma/vista-fonts-installer/workflows/linux-mint/badge.svg["Build Status", link="https://github.com/metanorma/vista-fonts-installer/actions?workflow=linux-mint"]
 
 == Purpose
 

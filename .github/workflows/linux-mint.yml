@@ -9,7 +9,7 @@ on:
 jobs:
   build_without_convert:
     runs-on: ubuntu-latest
-    container: dockerscripts/linuxmint
+    container: dockerscripts/linuxmint:xfce-minimal
     steps:
       - uses: actions/checkout@v4
 
@@ -26,7 +26,7 @@ jobs:
 
   build_with_convert:
     runs-on: ubuntu-latest
-    container: dockerscripts/linuxmint
+    container: dockerscripts/linuxmint:xfce-minimal
     steps:
       - uses: actions/checkout@v4
 
@@ -45,7 +45,7 @@ jobs:
 
   build_and_except_eula_manually:
     runs-on: ubuntu-latest
-    container: dockerscripts/linuxmint
+    container: dockerscripts/linuxmint:xfce-minimal
     steps:
       - uses: actions/checkout@v4
 
@@ -62,7 +62,7 @@ jobs:
 
   build_and_reject_eula_manually:
     runs-on: ubuntu-latest
-    container: dockerscripts/linuxmint
+    container: dockerscripts/linuxmint:xfce-minimal
     steps:
       - uses: actions/checkout@v4
 

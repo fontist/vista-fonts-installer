@@ -9,9 +9,9 @@ on:
 jobs:
   build_without_convert:
     runs-on: ubuntu-latest
-    container: vcatechnology/linux-mint
+    container: dockerscripts/linuxmint:xfce-minimal
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install prerequisite packages
         run: |
@@ -26,9 +26,9 @@ jobs:
 
   build_with_convert:
     runs-on: ubuntu-latest
-    container: vcatechnology/linux-mint
+    container: dockerscripts/linuxmint:xfce-minimal
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install prerequisite packages
         run: |
@@ -45,9 +45,9 @@ jobs:
 
   build_and_except_eula_manually:
     runs-on: ubuntu-latest
-    container: vcatechnology/linux-mint
+    container: dockerscripts/linuxmint:xfce-minimal
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install prerequisite packages
         run: |
@@ -62,9 +62,9 @@ jobs:
 
   build_and_reject_eula_manually:
     runs-on: ubuntu-latest
-    container: vcatechnology/linux-mint
+    container: dockerscripts/linuxmint:xfce-minimal
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install prerequisite packages
         run: |

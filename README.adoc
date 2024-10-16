@@ -1,3 +1,29 @@
+[NOTE]
+====
+:bangbang: This repository is *obsolete* and no longer actively maintained.
+
+If you want to install the **Microsoft Vista Fonts**, we recommend using the `fontist` gem, which automates the installation of these fonts.
+
+You can install the fonts by following the steps below:
+
+. Install `fontist` gem by running:
++
+[source, bash]
+----
+gem install fontist
+----
+
+. Use `fontist` to install the Constantia font from Microsoft Vista fonts collection:
++
+[source, bash]
+----
+fontist install Constantia
+----
+
+For more information about the `fontist` gem, please visit the official repository at https://github.com/fontist/fontist.
+
+====
+
 = Vista TrueType fonts installer (macOS, Ubuntu)
 
 image:https://github.com/metanorma/vista-fonts-installer/workflows/ubuntu/badge.svg["Build Status", link="https://github.com/metanorma/vista-fonts-installer/actions?workflow=ubuntu"]

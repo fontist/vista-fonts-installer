@@ -20,7 +20,7 @@ gem install fontist
 fontist install Constantia
 ----
 
-For more information about the `fontist` gem, please visit the official repository at https://github.com/fontist/fontist.
+For more information about the `fontist` gem, please visit the official site at https://fontist.org/ .
 
 ====
 
